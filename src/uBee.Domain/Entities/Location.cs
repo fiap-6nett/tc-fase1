@@ -7,12 +7,17 @@ namespace uBee.Domain.Entities
     public class Location : EntityBase
     {
         #region Properties
+
+        public new int Id { get; private set; }
         public int DDD { get; private set; }
         public string Region { get; private set; }
 
         #endregion
 
         #region Constructors
+
+        private Location() { }
+
         public Location(int ddd, string region)
         {
             AddNotifications(

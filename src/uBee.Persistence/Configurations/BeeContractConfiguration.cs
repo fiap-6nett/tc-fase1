@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using uBee.Domain.Entities;
 
-namespace uBee.Persistence.Mappings
+namespace uBee.Persistence.Configurations
 {
-    public class BeeContractMapping : IEntityTypeConfiguration<BeeContract>
+    public class BeeContractConfiguration : IEntityTypeConfiguration<BeeContract>
     {
         public void Configure(EntityTypeBuilder<BeeContract> builder)
         {

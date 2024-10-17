@@ -32,7 +32,7 @@ namespace uBee.Domain.Entities
         public DateTime? LastUpdatedAt { get; private set; }
 
         // Foreign Keys
-        public Guid IdLocation { get; private set; }
+        public int IdLocation { get; private set; }
         public Location Location { get; private set; }
 
         // Relationship
@@ -44,7 +44,7 @@ namespace uBee.Domain.Entities
         #region Constructors
         private User() { }
 
-        public User(string name, string surname, string email, string phone, string passwordHash, EnUserRole userRole, Guid idLocation)
+        public User(string name, string surname, string email, string phone, string passwordHash, EnUserRole userRole, int idLocation)
         {
             AddNotifications(
                 new Contract<Notification>()
@@ -55,7 +55,7 @@ namespace uBee.Domain.Entities
                     .IsNotEmpty(phone, nameof(phone), "The phone number is required.")
                     .IsNotEmpty(passwordHash, nameof(passwordHash), "The password is required.")
                     .IsTrue(Enum.IsDefined(typeof(EnUserRole), userRole), nameof(userRole), "The user role is invalid.")
-                    .IsFalse(idLocation == Guid.Empty, nameof(idLocation), "The location id is required.")
+                    .IsGreaterThan(idLocation, 0, nameof(idLocation), "The location id is required.")
             );
 
             if (IsValid)

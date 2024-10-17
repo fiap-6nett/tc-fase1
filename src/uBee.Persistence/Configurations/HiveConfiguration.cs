@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using uBee.Domain.Entities;
 
-namespace uBee.Persistence.Mappings
+namespace uBee.Persistence.Configurations
 {
-    public class HiveMapping : IEntityTypeConfiguration<Hive>
+    public class HiveConfiguration : IEntityTypeConfiguration<Hive>
     {
         public void Configure(EntityTypeBuilder<Hive> builder)
         {

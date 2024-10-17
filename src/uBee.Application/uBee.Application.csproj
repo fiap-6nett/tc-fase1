@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\uBee.Domain\uBee.Domain.csproj" />
-    <ProjectReference Include="..\uBee.Infrastructure\uBee.Infrastructure.csproj" />
-    <ProjectReference Include="..\uBee.Persistence\uBee.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

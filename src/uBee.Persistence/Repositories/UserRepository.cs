@@ -1,17 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using uBee.Domain.Entities;
 using uBee.Domain.Repositories;
+using uBee.Persistence.Core.Primitives;
 
 namespace uBee.Persistence.Repositories
 {
-    public class UserRepository : IUserRepository
+    internal sealed class UserRepository : GenericRepository<User>, IUserRepository
     {
+        #region Fields
+
         private readonly uBeeContext _context;
 
-        public UserRepository(uBeeContext context)
+        #endregion
+
+        #region Constructors
+
+        public UserRepository(uBeeContext context) : base(context)
         {
             _context = context;
         }
+
+        #endregion
+
+        #region IUserRepository Members
 
         public async Task<bool> CheckEmailInUseAsync(string email)
         {
@@ -36,21 +47,23 @@ namespace uBee.Persistence.Repositories
 
         public async Task InsertAsync(User user)
         {
-            await _context.Users.AddAsync(user);
+            await base.InsertAsync(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task MarkAsDeleted(User user)
         {
             user.MarkAsDeleted();
-            _context.Users.Update(user);
+            await base.UpdateAsync(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateNameAsync(User user)
         {
-            _context.Users.Update(user);
+            await base.UpdateAsync(user);
             await _context.SaveChangesAsync();
         }
+
+        #endregion
     }
 }

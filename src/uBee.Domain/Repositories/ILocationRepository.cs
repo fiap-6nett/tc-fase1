@@ -6,7 +6,7 @@ namespace uBee.Domain.Repositories
     {
         #region ILocationRepository Members
 
-        Task<Location> GetByIdAsync(Guid idLocation);
+        Task<Location> GetByIdAsync(int idLocation);
         Task<Location> GetByDDDAsync(int ddd);
         Task<IEnumerable<Location>> GetAllAsync();
         void Insert(Location location);

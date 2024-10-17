@@ -17,6 +17,7 @@ namespace uBee.Application.Handlers.Users
 
         public async Task<IQueryResult> Handler(GetUserByLocationQuery query)
         {
+            // Validar o query
             query.Validate();
             if (!query.IsValid)
             {

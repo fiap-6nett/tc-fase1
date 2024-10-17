@@ -48,7 +48,7 @@ namespace uBee.Domain.Queries.Users
             public string Surname { get; set; }
             public string Email { get; set; }
             public string Phone { get; set; }
-            public Guid IdLocation { get; set; }
+            public int IdLocation { get; set; }
             public EnUserRole UserRole { get; set; }
 
             public IReadOnlyCollection<Hive> Hives { get; set; }

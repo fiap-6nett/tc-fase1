@@ -1,17 +1,18 @@
+using System.Reflection;
 using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Reflection;
-using uBee.Domain.Entities;
+using System.Data.SqlClient;
+using uBee.Application.Core.Abstractions.Data;
 using uBee.Domain.Core.Abstractions;
-using uBee.Persistence.Mappings;
-using System.Threading;
-using System.Threading.Tasks;
+using uBee.Domain.Core.Primitives;
+using uBee.Domain.Entities;
+using uBee.Persistence.Seeds;
 
 namespace uBee.Persistence
 {
-    public class uBeeContext : DbContext
+    public sealed class uBeeContext : DbContext, IDbContext, IUnitOfWork
     {
         #region Constructors
 
@@ -31,20 +32,51 @@ namespace uBee.Persistence
 
         #endregion
 
-        #region Overridden Methods
+        #region IDbContext Members
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<TEntity> Set<TEntity, TKey>()
+            where TEntity : EntityBase
+            where TKey : IEquatable<TKey>
         {
-            modelBuilder.Ignore<Notification>();
-
-            modelBuilder.ApplyConfiguration(new UserMapping());
-            modelBuilder.ApplyConfiguration(new HiveMapping());
-            modelBuilder.ApplyConfiguration(new BeeContractMapping());
-            modelBuilder.ApplyConfiguration(new LocationMapping());
-            modelBuilder.ApplyConfiguration(new ContractedHiveMapping());
-
-            base.OnModelCreating(modelBuilder);
+            return base.Set<TEntity>();
         }
+
+        public async Task<TEntity> GetBydIdAsync<TEntity, TKey>(TKey idEntity)
+            where TEntity : EntityBase
+            where TKey : IEquatable<TKey>
+        {
+            return await Set<TEntity>().FirstOrDefaultAsync(e => e.Id.Equals(idEntity));
+        }
+
+        public void Insert<TEntity, TKey>(TEntity entity)
+            where TEntity : EntityBase
+            where TKey : IEquatable<TKey>
+        {
+            Set<TEntity>().Add(entity);
+        }
+
+        public void InsertRange<TEntity, TKey>(IReadOnlyCollection<TEntity> entities)
+            where TEntity : EntityBase
+            where TKey : IEquatable<TKey>
+        {
+            Set<TEntity>().AddRange(entities);
+        }
+
+        public void Remove<TEntity, TKey>(TEntity entity)
+            where TEntity : EntityBase
+            where TKey : IEquatable<TKey>
+        {
+            Set<TEntity>().Remove(entity);
+        }
+
+        public async Task<int> ExecuteSqlAsync(string sql, IEnumerable<SqlParameter> parameters, CancellationToken cancellationToken = default)
+        {
+            return await Database.ExecuteSqlRawAsync(sql, parameters.ToArray(), cancellationToken);
+        }
+
+        #endregion
+
+        #region IUnitOfWork Members
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -56,12 +88,32 @@ namespace uBee.Persistence
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+        public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+            => Database.BeginTransactionAsync(cancellationToken);
+
+        #endregion
+
+        #region Overridden Methods
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<Notification>();
+
+            // Seeds
+            new LocationSeed().Configure(modelBuilder);
+
+            // Apply configurations from the assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         #endregion
 
         #region Private Methods
 
         /// <summary>
-        /// Updates the audit fields (CreatedAt and LastUpdatedAt) for entities that implement IAuditableEntity.
+        /// Atualiza os campos de auditoria (CreatedAt e LastUpdatedAt) para entidades que implementam IAuditableEntity.
         /// </summary>
         private void UpdateAuditableEntities(DateTime currentDate)
         {
@@ -76,7 +128,7 @@ namespace uBee.Persistence
         }
 
         /// <summary>
-        /// Automatically handles soft deletion for entities that implement ISoftDeletableEntity.
+        /// Gerencia a exclusão suave (soft delete) para entidades que implementam ISoftDeletableEntity.
         /// </summary>
         private void HandleSoftDeletes()
         {
@@ -93,7 +145,7 @@ namespace uBee.Persistence
         }
 
         /// <summary>
-        /// Ensures that related entities of a soft-deleted entity are not deleted as well.
+        /// Garante que entidades relacionadas a uma entidade excluída não sejam excluídas também.
         /// </summary>
         private static void UpdateDeletedEntityReferences(EntityEntry entityEntry)
         {
@@ -102,6 +154,15 @@ namespace uBee.Persistence
                 referenceEntry.TargetEntry.State = EntityState.Unchanged;
                 UpdateDeletedEntityReferences(referenceEntry.TargetEntry);
             }
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
         #endregion

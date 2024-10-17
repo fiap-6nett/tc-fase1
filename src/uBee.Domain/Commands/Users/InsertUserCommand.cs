@@ -16,7 +16,7 @@ namespace uBee.Domain.Commands.Users
         public string Phone { get; set; }
         public string Password { get; set; }
         public EnUserRole UserRole { get; set; }
-        public Guid IdLocation { get; set; }
+        public int IdLocation { get; set; }
 
         #endregion
 
@@ -24,7 +24,7 @@ namespace uBee.Domain.Commands.Users
 
         public InsertUserCommand() { }
 
-        public InsertUserCommand(string name, string surname, string email, string phone, string password, EnUserRole userRole, Guid idLocation)
+        public InsertUserCommand(string name, string surname, string email, string phone, string password, EnUserRole userRole, int idLocation)
         {
             Name = name;
             Surname = surname;
@@ -50,7 +50,7 @@ namespace uBee.Domain.Commands.Users
                     .IsNotEmpty(Phone, nameof(Phone), "The phone number is required.")
                     .IsNotEmpty(Password, nameof(Password), "The password is required.")
                     .IsTrue(Enum.IsDefined(typeof(EnUserRole), UserRole), nameof(UserRole), "The user role is invalid.")
-                    .IsFalse(IdLocation == Guid.Empty, nameof(IdLocation), "The location ID is required.")
+                    .IsGreaterThan(IdLocation, 0, nameof(IdLocation), "The location ID must be greater than zero.")
             );
         }
 
