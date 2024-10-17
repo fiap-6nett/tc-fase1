@@ -5,8 +5,6 @@ using uBee.Domain.Core.Primitives;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
 
 namespace uBee.Domain.Entities
 {
@@ -26,14 +24,11 @@ namespace uBee.Domain.Entities
         public string Email { get; private set; }
         public string Phone { get; private set; }
         public EnUserRole UserRole { get; private set; }
+        public EnLocation Location { get; private set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? LastUpdatedAt { get; private set; }
-
-        // Foreign Keys
-        public int IdLocation { get; private set; }
-        public Location Location { get; private set; }
 
         // Relationship
         public IReadOnlyCollection<Hive> Hives => _hives.AsReadOnly();
@@ -44,7 +39,7 @@ namespace uBee.Domain.Entities
         #region Constructors
         private User() { }
 
-        public User(string name, string surname, string email, string phone, string passwordHash, EnUserRole userRole, int idLocation)
+        public User(string name, string surname, string email, string phone, string passwordHash, EnUserRole userRole, EnLocation location)
         {
             AddNotifications(
                 new Contract<Notification>()
@@ -55,7 +50,7 @@ namespace uBee.Domain.Entities
                     .IsNotEmpty(phone, nameof(phone), "The phone number is required.")
                     .IsNotEmpty(passwordHash, nameof(passwordHash), "The password is required.")
                     .IsTrue(Enum.IsDefined(typeof(EnUserRole), userRole), nameof(userRole), "The user role is invalid.")
-                    .IsGreaterThan(idLocation, 0, nameof(idLocation), "The location id is required.")
+                    .IsTrue(Enum.IsDefined(typeof(EnLocation), location), nameof(location), "The location is invalid.")
             );
 
             if (IsValid)
@@ -66,7 +61,7 @@ namespace uBee.Domain.Entities
                 Phone = phone;
                 _passwordHash = passwordHash;
                 UserRole = userRole;
-                IdLocation = idLocation;
+                Location = location;
                 CreatedAt = DateTime.Now;
                 LastUpdatedAt = null;
                 IsDeleted = false;

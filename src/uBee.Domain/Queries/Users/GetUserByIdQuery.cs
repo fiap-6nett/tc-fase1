@@ -48,20 +48,20 @@ namespace uBee.Domain.Queries.Users
             public string Surname { get; set; }
             public string Email { get; set; }
             public string Phone { get; set; }
-            public int IdLocation { get; set; }
             public EnUserRole UserRole { get; set; }
+            public EnLocation Location { get; set; }
 
             public IReadOnlyCollection<Hive> Hives { get; }
             public IReadOnlyCollection<BeeContract> BeeContracts { get; }
 
-            public GetUserByIdResult(Guid id, string name, string surname, string email, string phone, int idLocation, EnUserRole userRole, IReadOnlyCollection<Hive> hives, IReadOnlyCollection<BeeContract> beeContracts)
+            public GetUserByIdResult(Guid id, string name, string surname, string email, string phone, EnLocation location, EnUserRole userRole, IReadOnlyCollection<Hive> hives, IReadOnlyCollection<BeeContract> beeContracts)
             {
                 Id = id;
                 Name = name;
                 Surname = surname;
                 Email = email;
                 Phone = phone;
-                IdLocation = idLocation;
+                Location = location;
                 UserRole = userRole;
                 Hives = hives;
                 BeeContracts = beeContracts;

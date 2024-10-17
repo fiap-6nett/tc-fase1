@@ -40,34 +40,33 @@ namespace uBee.Persistence.Configurations
             builder.Property(x => x.UserRole)
                    .IsRequired();
 
-            builder.HasOne(x => x.Location)
-                   .WithMany()
-                   .HasForeignKey(x => x.IdLocation)
-                   .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(x => x.Location)
+                   .IsRequired();
 
             builder.Property(x => x.IsDeleted)
                    .HasDefaultValue(false);
 
             builder.Property(x => x.CreatedAt)
+                   .HasDefaultValueSql("GETUTCDATE()")
                    .IsRequired();
 
             builder.Property(x => x.LastUpdatedAt);
 
             builder.HasQueryFilter(x => !x.IsDeleted);
 
-            //SeedInitialUsers(builder);
+            SeedInitialUsers(builder);
         }
 
         private void SeedInitialUsers(EntityTypeBuilder<User> builder)
         {
             var users = new List<object>
             {
-                 new { Id = Guid.NewGuid(), Name = "Administrador", Surname = "(built-in)",   Email = "admin@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Administrator,  PasswordHash = "Admin@123", IdLocation = 1 },
-                 new { Id = Guid.NewGuid(), Name = "Cleber",        Surname = "(built-in)",   Email = "cleber@ubee.com",   Phone = "999999999", UserRole = EnUserRole.Beekeeper,      PasswordHash = "Cleber@123", IdLocation = 2 },
-                 new { Id = Guid.NewGuid(), Name = "Diego",         Surname = "(built-in)",   Email = "diego@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Farmer,         PasswordHash = "Diego@123", IdLocation = 3 },
-                 new { Id = Guid.NewGuid(), Name = "Lucas",         Surname = "(built-in)",   Email = "lucas@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Farmer,         PasswordHash = "Lucas@123", IdLocation = 4 },
-                 new { Id = Guid.NewGuid(), Name = "Rafael",        Surname = "(built-in)",   Email = "rafael@ubee.com",   Phone = "999999999", UserRole = EnUserRole.Beekeeper,      PasswordHash = "Rafael@123", IdLocation = 5 },
-                 new { Id = Guid.NewGuid(), Name = "Wesley",        Surname = "(built-in)",   Email = "wesley@ubee.com",   Phone = "999999999", UserRole = EnUserRole.Farmer,         PasswordHash = "Wesley@123", IdLocation = 6 }
+                 new { Id = Guid.NewGuid(), Name = "Administrador", Surname = "(built-in)",   Email = "admin@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Administrator,  _passwordHash = "Admin@123", Location = EnLocation.SaoPauloCity },
+                 new { Id = Guid.NewGuid(), Name = "Cleber",        Surname = "(built-in)",   Email = "cleber@ubee.com",   Phone = "999999991", UserRole = EnUserRole.Beekeeper,      _passwordHash = "Cleber@123", Location = EnLocation.SorocabaRegion },
+                 new { Id = Guid.NewGuid(), Name = "Diego",         Surname = "(built-in)",   Email = "diego@ubee.com",    Phone = "999999992", UserRole = EnUserRole.Farmer,         _passwordHash = "Diego@123", Location = EnLocation.SorocabaRegion },
+                 new { Id = Guid.NewGuid(), Name = "Lucas",         Surname = "(built-in)",   Email = "lucas@ubee.com",    Phone = "999999993", UserRole = EnUserRole.Farmer,         _passwordHash = "Lucas@123", Location = EnLocation.SaoPauloCity },
+                 new { Id = Guid.NewGuid(), Name = "Rafael",        Surname = "(built-in)",   Email = "rafael@ubee.com",   Phone = "999999994", UserRole = EnUserRole.Beekeeper,      _passwordHash = "Rafael@123", Location = EnLocation.SaoPauloCity },
+                 new { Id = Guid.NewGuid(), Name = "Wesley",        Surname = "(built-in)",   Email = "wesley@ubee.com",   Phone = "999999995", UserRole = EnUserRole.Farmer,         _passwordHash = "Wesley@123", Location = EnLocation.RioDeJaneiroCity }
             };
 
             builder.HasData(users);

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using uBee.Domain.Entities;
+using uBee.Domain.Enumerations;
 using uBee.Domain.Repositories;
 using uBee.Persistence.Core.Primitives;
 
@@ -37,11 +38,11 @@ namespace uBee.Persistence.Repositories
                 .FirstOrDefaultAsync(u => u.Id == idUser);
         }
 
-        public async Task<IEnumerable<User>> GetByLocationAsync(int ddd)
+        public async Task<IEnumerable<User>> GetByLocationAsync(EnLocation ddd)
         {
             return await _context.Users
                 .Include(u => u.Location)
-                .Where(u => u.Location.DDD == ddd)
+                .Where(u => u.Location == ddd)
                 .ToListAsync();
         }
 

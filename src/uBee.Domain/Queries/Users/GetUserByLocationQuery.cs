@@ -11,7 +11,7 @@ namespace uBee.Domain.Queries.Users
     {
         #region Properties
 
-        public int DDD { get; set; }
+        public EnLocation Location { get; set; }
 
         #endregion
 
@@ -19,9 +19,9 @@ namespace uBee.Domain.Queries.Users
 
         public GetUserByLocationQuery() { }
 
-        public GetUserByLocationQuery(int ddd)
+        public GetUserByLocationQuery(EnLocation location)
         {
-            DDD = ddd;
+            Location = location;
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace uBee.Domain.Queries.Users
             AddNotifications(
                 new Contract<Notification>()
                     .Requires()
-                    .IsBetween(DDD, 11, 99, nameof(DDD), "The DDD must be a valid number between 11 and 99.")
+                    .IsTrue(Enum.IsDefined(typeof(EnLocation), Location), nameof(Location), "The location must be a valid value from EnLocation.")
             );
         }
 
@@ -48,7 +48,7 @@ namespace uBee.Domain.Queries.Users
             public string Surname { get; set; }
             public string Email { get; set; }
             public string Phone { get; set; }
-            public int IdLocation { get; set; }
+            public EnLocation Location { get; set; }
             public EnUserRole UserRole { get; set; }
 
             public IReadOnlyCollection<Hive> Hives { get; set; }

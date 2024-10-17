@@ -8,7 +8,6 @@ using uBee.Application.Core.Abstractions.Data;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
 using uBee.Domain.Entities;
-using uBee.Persistence.Seeds;
 
 namespace uBee.Persistence
 {
@@ -27,7 +26,6 @@ namespace uBee.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<Hive> Hives { get; set; }
         public DbSet<BeeContract> BeeContracts { get; set; }
-        public DbSet<Location> Locations { get; set; }
         public DbSet<ContractedHive> ContractedHives { get; set; }
 
         #endregion
@@ -98,9 +96,6 @@ namespace uBee.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<Notification>();
-
-            // Seeds
-            new LocationSeed().Configure(modelBuilder);
 
             // Apply configurations from the assembly
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -35,7 +35,7 @@ namespace uBee.Application.Handlers.Users
                 user.Surname,
                 user.Email,
                 user.Phone,
-                user.IdLocation,
+                user.Location,
                 user.UserRole,
                 user.Hives,
                 user.BeeContracts

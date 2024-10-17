@@ -17,14 +17,13 @@ namespace uBee.Application.Handlers.Users
 
         public async Task<IQueryResult> Handler(GetUserByLocationQuery query)
         {
-            // Validar o query
             query.Validate();
             if (!query.IsValid)
             {
                 return new GenericQueryResult(false, "Invalid query data", query.Notifications);
             }
 
-            var users = await _userRepository.GetByLocationAsync(query.DDD);
+            var users = await _userRepository.GetByLocationAsync(query.Location);
             if (users == null || !users.Any())
             {
                 return new GenericQueryResult(false, "No users found for the specified DDD", null);
@@ -37,7 +36,7 @@ namespace uBee.Application.Handlers.Users
                 Surname = user.Surname,
                 Email = user.Email,
                 Phone = user.Phone,
-                IdLocation = user.IdLocation,
+                Location = user.Location,
                 UserRole = user.UserRole,
                 Hives = user.Hives,
                 BeeContracts = user.BeeContracts

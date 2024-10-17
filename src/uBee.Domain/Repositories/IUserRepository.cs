@@ -1,4 +1,5 @@
 using uBee.Domain.Entities;
+using uBee.Domain.Enumerations;
 
 namespace uBee.Domain.Repositories
 {
@@ -7,7 +8,7 @@ namespace uBee.Domain.Repositories
         #region IUserRepository Members
 
         Task<User> GetByIdAsync(Guid idUser);
-        Task<IEnumerable<User>> GetByLocationAsync(int ddd);
+        Task<IEnumerable<User>> GetByLocationAsync(EnLocation ddd);
         Task<bool> CheckEmailInUseAsync(string email);
         Task InsertAsync(User user);
         Task UpdateNameAsync(User user);

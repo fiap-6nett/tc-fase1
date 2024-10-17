@@ -35,7 +35,7 @@ namespace uBee.Application.Handlers.Users
 
             command.Password = _passwordHasher.Encrypt(command.Password);
 
-            var user = new User(command.Name, command.Surname, command.Email, command.Phone, command.Password, command.UserRole, command.IdLocation);
+            var user = new User(command.Name, command.Surname, command.Email, command.Phone, command.Password, command.UserRole, command.Location);
 
             if (!user.IsValid)
             {
