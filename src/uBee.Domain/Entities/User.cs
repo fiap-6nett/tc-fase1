@@ -5,6 +5,7 @@ using uBee.Domain.Core.Primitives;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
+using uBee.Shared.Extensions;
 
 namespace uBee.Domain.Entities
 {
@@ -73,10 +74,8 @@ namespace uBee.Domain.Entities
         #endregion
 
         #region Methods
-        public bool VerifyPassword(string password)
-        {
-            return _passwordHash == password;
-        }
+        public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
+            => !password.IsNullOrWhiteSpace() && passwordHashChecker.HashesMatch(_passwordHash, password);
 
         public void ChangePassword(string passwordHash)
         {

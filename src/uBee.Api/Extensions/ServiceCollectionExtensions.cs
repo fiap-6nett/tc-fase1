@@ -1,4 +1,4 @@
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using uBee.Persistence;
@@ -15,17 +15,18 @@ namespace uBee.Api.Extensions
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "uBee API",
-                    Version = "v1",
+                    Title = "uBee - API",
+                    Version = "v1"
                 });
 
-                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Description = "JWT Authorization header using the Bearer scheme.",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer"
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer",
                 });
 
                 setup.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -46,10 +47,6 @@ namespace uBee.Api.Extensions
                 });
 
                 setup.OperationFilter<SecurityRequirementsOperationFilter>(true, "Bearer");
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                setup.IncludeXmlComments(xmlPath);
             });
 
             return services;
@@ -60,7 +57,7 @@ namespace uBee.Api.Extensions
             using var serviceScope = builder.ApplicationServices.CreateScope();
             using var dbContext = serviceScope.ServiceProvider.GetRequiredService<uBeeContext>();
 
-            dbContext.Database.EnsureCreated();
+            dbContext.Database.Migrate();
 
             return builder;
         }

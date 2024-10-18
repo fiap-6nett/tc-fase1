@@ -8,11 +8,10 @@ namespace uBee.Domain.Repositories
         #region IUserRepository Members
 
         Task<User> GetByIdAsync(Guid idUser);
+        Task<User> GetByEmailAsync(string email);
+        Task<bool> IsEmailUniqueAsync(string email);
         Task<IEnumerable<User>> GetByLocationAsync(EnLocation ddd);
-        Task<bool> CheckEmailInUseAsync(string email);
         Task InsertAsync(User user);
-        Task UpdateNameAsync(User user);
-        Task MarkAsDeleted(User user);
 
         #endregion
     }

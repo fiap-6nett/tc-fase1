@@ -6,8 +6,20 @@ namespace uBee.Api.Extensions
 
         internal static IApplicationBuilder ConfigureSwagger(this IApplicationBuilder builder)
         {
-            builder.UseSwagger();
-            builder.UseSwaggerUI(swaggerUiOptions => swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "uBee API"));
+            var env = builder.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
+
+            if (env.IsDevelopment())
+            {
+                builder.UseDeveloperExceptionPage();
+
+                builder.UseSwagger();
+
+                builder.UseSwaggerUI(swaggerUiOptions =>
+                {
+                    swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "uBee.API v1");
+                    swaggerUiOptions.RoutePrefix = string.Empty;
+                });
+            }
 
             return builder;
         }

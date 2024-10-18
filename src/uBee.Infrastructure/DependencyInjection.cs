@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using uBee.Application.Core.Abstractions.Authentication;
 using uBee.Infrastructure.Authentication.Settings;
 using uBee.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Identity;
+using uBee.Domain.Core.Abstractions;
 
 namespace uBee.Infrastructure
 {
@@ -36,6 +38,7 @@ namespace uBee.Infrastructure
             services.AddScoped<IJwtProvider, JwtProvider>();
 
             services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IPasswordHashChecker, PasswordHasher>();
 
             return services;
         }

@@ -5,6 +5,7 @@ using uBee.Domain.Repositories;
 using uBee.Application.Core.Abstractions.Cryptography;
 using uBee.Shared.Commands;
 using uBee.Shared.Handlers.Contracts;
+using uBee.Domain.ValueObjects;
 
 namespace uBee.Application.Handlers.Users
 {
@@ -27,13 +28,13 @@ namespace uBee.Application.Handlers.Users
                 return new GenericCommandResult(false, "Please correct the provided user data", command.Notifications);
             }
 
-            var emailExists = await _userRepository.CheckEmailInUseAsync(command.Email);
+            var emailExists = await _userRepository.IsEmailUniqueAsync(command.Email);
             if (emailExists)
             {
                 return new GenericCommandResult(false, "Email is already in use", "Please use another email");
             }
 
-            command.Password = _passwordHasher.Encrypt(command.Password);
+            command.Password = _passwordHasher.HashPassword(Password.Create(command.Password));
 
             var user = new User(command.Name, command.Surname, command.Email, command.Phone, command.Password, command.UserRole, command.Location);
 

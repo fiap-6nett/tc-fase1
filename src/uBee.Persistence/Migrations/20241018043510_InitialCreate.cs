@@ -127,12 +127,12 @@ namespace uBee.Persistence.Migrations
                 columns: new[] { "Id", "Email", "LastUpdatedAt", "Location", "Name", "Phone", "Surname", "UserRole", "PasswordHash" },
                 values: new object[,]
                 {
-                    { new Guid("3a6ea239-84c7-40f5-8c9e-59212fe805d5"), "cleber@ubee.com", null, 15, "Cleber", "999999991", "(built-in)", 3, "Cleber@123" },
-                    { new Guid("4351821b-94c4-4d52-9d41-78ef037cc021"), "rafael@ubee.com", null, 11, "Rafael", "999999994", "(built-in)", 3, "Rafael@123" },
-                    { new Guid("64cc4184-b9d1-42ef-aef1-c8fcfefde98e"), "admin@ubee.com", null, 11, "Administrador", "999999999", "(built-in)", 1, "Admin@123" },
-                    { new Guid("b4f83806-2d4e-4759-be9c-5537462af0f9"), "wesley@ubee.com", null, 21, "Wesley", "999999995", "(built-in)", 2, "Wesley@123" },
-                    { new Guid("b6d8e964-df6e-43eb-b47a-b30e7889cd08"), "lucas@ubee.com", null, 11, "Lucas", "999999993", "(built-in)", 2, "Lucas@123" },
-                    { new Guid("d228dd0f-aac8-4c19-8197-f19719f6277c"), "diego@ubee.com", null, 15, "Diego", "999999992", "(built-in)", 2, "Diego@123" }
+                    { new Guid("18e74db3-4205-423b-9ffd-a9bf38aff665"), "lucas@ubee.com", null, 11, "Lucas", "999999993", "(built-in)", 2, "Wa+ZKmUcoWjcVPjQwVzY3tok2Thcejh2fGlA2lwZXv2oZ0NxL6Kb71NPYB8LP2De" },
+                    { new Guid("5b108440-fa72-4373-9f32-c962addb105e"), "wesley@ubee.com", null, 21, "Wesley", "999999995", "(built-in)", 2, "V8xyPoBEnUEUKLq5dxW5hqk8yiD42kfs1BMd8fKRkgrL9Ad1cA95US4avnA4TPYz" },
+                    { new Guid("6e409a41-6cbb-4f8d-92f3-c05b6bb6e181"), "rafael@ubee.com", null, 11, "Rafael", "999999994", "(built-in)", 3, "tiNsfaj8kjCoJJcJeNyQqn03Ym4vuQldu3T+QL0AtJ9OzfkZcwo8UCd5+UcTDzEa" },
+                    { new Guid("b31ea7f4-b852-45d1-ae38-684310c6fb17"), "diego@ubee.com", null, 15, "Diego", "999999992", "(built-in)", 2, "SlZEzmsPcuYfe8GRqN9lMLqv5KJpVmGpChaRoS5YVYQo/sSdeY6G5xj+nLF7zxJR" },
+                    { new Guid("c5901c93-817a-43d4-a5ab-be2d3aee1ee3"), "cleber@ubee.com", null, 15, "Cleber", "999999991", "(built-in)", 3, "AxX8E7IFxv4rSTXU40IRjY6oPLVOq1y1tp0O5/vabDT/SPZlOWdktbiKCz2YLdzJ" },
+                    { new Guid("d9612923-19ce-4af6-a166-94d919e42fa3"), "admin@ubee.com", null, 11, "Administrador", "999999999", "(built-in)", 1, "BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -4,44 +4,32 @@ using uBee.Application;
 using uBee.Infrastructure;
 using uBee.Persistence;
 
-namespace uBee.Api
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services
-                .AddApplication()
-                .AddInfrastructure(builder.Configuration)
-                .AddPersistence(builder.Configuration);
+builder.Services
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration)
+    .AddPersistence(builder.Configuration);
 
-            builder.Services.AddControllers();
-            builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
-            builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwagger();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwagger();
 
-            var app = builder.Build();
+var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.ConfigureSwagger();
-            }
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapControllers();
+app.MapControllers();
 
-            app.EnsureDatabaseCreated();
+app.EnsureDatabaseCreated();
 
-            app.Run();
-        }
-    }
-}
+app.ConfigureSwagger();
+
+app.Run();

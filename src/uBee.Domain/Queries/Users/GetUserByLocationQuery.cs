@@ -11,7 +11,7 @@ namespace uBee.Domain.Queries.Users
     {
         #region Properties
 
-        public EnLocation Location { get; set; }
+        public EnLocation DDD { get; set; }
 
         #endregion
 
@@ -19,9 +19,9 @@ namespace uBee.Domain.Queries.Users
 
         public GetUserByLocationQuery() { }
 
-        public GetUserByLocationQuery(EnLocation location)
+        public GetUserByLocationQuery(EnLocation ddd)
         {
-            Location = location;
+            DDD = ddd;
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace uBee.Domain.Queries.Users
             AddNotifications(
                 new Contract<Notification>()
                     .Requires()
-                    .IsTrue(Enum.IsDefined(typeof(EnLocation), Location), nameof(Location), "The location must be a valid value from EnLocation.")
+                    .IsTrue(Enum.IsDefined(typeof(EnLocation), DDD), nameof(DDD), "The location must be a valid value from EnLocation.")
             );
         }
 

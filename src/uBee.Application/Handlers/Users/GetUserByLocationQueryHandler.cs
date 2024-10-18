@@ -1,4 +1,5 @@
 using Flunt.Notifications;
+using uBee.Domain.Enumerations;
 using uBee.Domain.Queries.Users;
 using uBee.Domain.Repositories;
 using uBee.Shared.Handlers.Contracts;
@@ -23,7 +24,7 @@ namespace uBee.Application.Handlers.Users
                 return new GenericQueryResult(false, "Invalid query data", query.Notifications);
             }
 
-            var users = await _userRepository.GetByLocationAsync(query.Location);
+            var users = await _userRepository.GetByLocationAsync(query.DDD);
             if (users == null || !users.Any())
             {
                 return new GenericQueryResult(false, "No users found for the specified DDD", null);

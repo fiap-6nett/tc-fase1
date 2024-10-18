@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using uBee.Domain.Entities;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Repositories;
@@ -25,45 +24,14 @@ namespace uBee.Persistence.Repositories
 
         #region IUserRepository Members
 
-        public async Task<bool> CheckEmailInUseAsync(string email)
-        {
-            return await _context.Users
-                .AnyAsync(u => u.Email == email);
-        }
+        public async Task<User> GetByEmailAsync(string email)
+            => await FirstOrDefaultAsync(user => user.Email == email);
 
-        public async Task<User> GetByIdAsync(Guid idUser)
-        {
-            return await _context.Users
-                .Include(u => u.Location)
-                .FirstOrDefaultAsync(u => u.Id == idUser);
-        }
+        public async Task<bool> IsEmailUniqueAsync(string email)
+            => !await AnyAsync(user => user.Email == email);
 
         public async Task<IEnumerable<User>> GetByLocationAsync(EnLocation ddd)
-        {
-            return await _context.Users
-                .Include(u => u.Location)
-                .Where(u => u.Location == ddd)
-                .ToListAsync();
-        }
-
-        public async Task InsertAsync(User user)
-        {
-            await base.InsertAsync(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task MarkAsDeleted(User user)
-        {
-            user.MarkAsDeleted();
-            await base.UpdateAsync(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateNameAsync(User user)
-        {
-            await base.UpdateAsync(user);
-            await _context.SaveChangesAsync();
-        }
+            => (IEnumerable<User>)await FirstOrDefaultAsync(user => user.Location == ddd);
 
         #endregion
     }
