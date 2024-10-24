@@ -33,13 +33,19 @@ namespace uBee.Infrastructure.Authentication
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecurityKey));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var userClaims = new Claim[]
+            var userClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name.ToString()),
-                new Claim(ClaimTypes.Surname, user.Surname.ToString()),
-                new Claim(ClaimTypes.Email, user.Email.ToString())
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Surname, user.Surname),
+                new Claim(ClaimTypes.Email, user.Email.Value),
+                new Claim("UserRole", user.UserRole.ToString())
             };
+
+            if (user.Location != null)
+            {
+                userClaims.Add(new Claim("Location", user.Location.Name));
+            }
 
             var tokenExpirationTime = DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes);
 

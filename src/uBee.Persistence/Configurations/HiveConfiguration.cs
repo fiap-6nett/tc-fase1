@@ -10,29 +10,30 @@ namespace uBee.Persistence.Configurations
         {
             builder.ToTable("hives");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(h => h.Id);
 
-            builder.Property(x => x.Description)
-                   .HasMaxLength(256)
+            builder.Property(h => h.Description)
+                   .IsRequired()
+                   .HasMaxLength(256);
+
+            builder.Property(h => h.Status)
                    .IsRequired();
 
-            builder.Property(x => x.Status)
-                   .IsRequired();
-
-            builder.Property(x => x.IsDeleted)
+            builder.Property(h => h.IsDeleted)
                    .HasDefaultValue(false);
 
-            builder.Property(x => x.CreatedAt)
+            builder.Property(h => h.CreatedAt)
                    .IsRequired();
 
-            builder.Property(x => x.LastUpdatedAt);
+            builder.Property(h => h.LastUpdatedAt)
+                   .IsRequired(false);
 
-            builder.HasOne(x => x.User)
+            builder.HasOne(h => h.User)
                    .WithMany(u => u.Hives)
-                   .HasForeignKey(x => x.IdUser)
+                   .HasForeignKey(h => h.IdUser)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasQueryFilter(x => !x.IsDeleted);
+            builder.HasQueryFilter(h => !h.IsDeleted);
         }
     }
 }

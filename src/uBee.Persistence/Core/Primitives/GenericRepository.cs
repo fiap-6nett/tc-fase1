@@ -7,16 +7,22 @@ using uBee.Domain.Core.Primitives;
 
 namespace uBee.Persistence.Core.Primitives
 {
-    internal abstract class GenericRepository<TEntity>
-        where TEntity : EntityBase
+    internal abstract class GenericRepository<TEntity, TKey>
+        where TEntity : Entity<TKey>
+        where TKey : IEquatable<TKey>
     {
+        #region Constructors
+
         protected uBeeContext DbContext { get; }
 
         protected GenericRepository(uBeeContext dbContext)
             => DbContext = dbContext;
 
-        // Operações Assíncronas Genéricas
-        public async Task<TEntity> GetByIdAsync(Guid entityId)
+        #endregion
+
+        #region CRUD Operations
+
+        public async Task<TEntity> GetByIdAsync(TKey entityId)
             => await DbContext.Set<TEntity>().FindAsync(entityId);
 
         public async Task InsertAsync(TEntity entity)
@@ -25,16 +31,28 @@ namespace uBee.Persistence.Core.Primitives
         public async Task InsertRangeAsync(IReadOnlyCollection<TEntity> entities)
             => await DbContext.Set<TEntity>().AddRangeAsync(entities);
 
-        public async Task UpdateAsync(TEntity entity)
-            => DbContext.Set<TEntity>().Update(entity);
+        public Task UpdateAsync(TEntity entity)
+        {
+            DbContext.Set<TEntity>().Update(entity);
+            return Task.CompletedTask;
+        }
 
-        public async Task RemoveAsync(TEntity entity)
-            => DbContext.Set<TEntity>().Remove(entity);
+        public Task RemoveAsync(TEntity entity)
+        {
+            DbContext.Set<TEntity>().Remove(entity);
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Query Operations
 
         public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
             => await DbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
             => await DbContext.Set<TEntity>().AnyAsync(predicate);
+
+        #endregion
     }
 }

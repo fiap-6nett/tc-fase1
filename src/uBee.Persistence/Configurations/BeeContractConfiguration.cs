@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using uBee.Domain.Entities;
 
 namespace uBee.Persistence.Configurations
@@ -10,35 +10,36 @@ namespace uBee.Persistence.Configurations
         {
             builder.ToTable("beecontracts");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(b => b.Id);
 
-            builder.Property(x => x.StartDate)
+            builder.Property(b => b.StartDate)
                    .IsRequired();
 
-            builder.Property(x => x.EndDate)
+            builder.Property(b => b.EndDate)
                    .IsRequired();
 
-            builder.Property(x => x.Price)
+            builder.Property(b => b.Price)
                    .HasColumnType("decimal(18,2)")
                    .IsRequired();
 
-            builder.Property(x => x.Status)
+            builder.Property(b => b.Status)
                    .IsRequired();
 
-            builder.Property(x => x.IsDeleted)
+            builder.Property(b => b.IsDeleted)
                    .HasDefaultValue(false);
 
-            builder.Property(x => x.CreatedAt)
+            builder.Property(b => b.CreatedAt)
                    .IsRequired();
 
-            builder.Property(x => x.LastUpdatedAt);
+            builder.Property(b => b.LastUpdatedAt)
+                   .IsRequired(false);
 
-            builder.HasOne(x => x.User)
+            builder.HasOne(b => b.User)
                    .WithMany(u => u.BeeContracts)
-                   .HasForeignKey(x => x.IdUser)
+                   .HasForeignKey(b => b.IdUser)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasQueryFilter(x => !x.IsDeleted);
+            builder.HasQueryFilter(b => !b.IsDeleted);
         }
     }
 }

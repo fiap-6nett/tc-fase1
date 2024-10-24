@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using uBee.Persistence;
 
@@ -11,9 +12,11 @@ using uBee.Persistence;
 namespace uBee.Persistence.Migrations
 {
     [DbContext(typeof(uBeeContext))]
-    partial class uBeeContextModelSnapshot : ModelSnapshot
+    [Migration("20241024004053_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -16,8 +16,11 @@ namespace uBee.Infrastructure.Authentication
 
         public UserSessionProvider(IHttpContextAccessor httpContextAccessor)
         {
-            if (!Guid.TryParse(httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier), out var idUser))
+            var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdClaim, out var idUser))
+            {
                 throw new ArgumentException("The user identifier claim is required.", nameof(httpContextAccessor));
+            }
 
             IdUser = idUser;
         }

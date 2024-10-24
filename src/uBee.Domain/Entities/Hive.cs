@@ -1,22 +1,22 @@
-using Flunt.Notifications;
-using Flunt.Validations;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
+using uBee.Domain.Core.Utility;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
-using static uBee.Domain.Errors.DomainError;
 
 namespace uBee.Domain.Entities
 {
-    public class Hive : EntityBase, IAuditableEntity, ISoftDeletableEntity
+    public class Hive : AggregateRoot<int>, IAuditableEntity, ISoftDeletableEntity
     {
         #region Private Fields
+
         private List<ContractedHive> _contractedHives;
 
         #endregion
 
         #region Properties
+
         public string Description { get; private set; }
         public EnHiveStatus Status { get; private set; }
 
@@ -25,39 +25,28 @@ namespace uBee.Domain.Entities
         public DateTime? LastUpdatedAt { get; private set; }
 
         // Foreign Keys
-        public Guid IdUser { get; private set; }
+        public int IdUser { get; private set; }
         public User User { get; private set; }
 
-        // Relationship
+        // Compositions
         public IReadOnlyCollection<ContractedHive> ContractedHives => _contractedHives.AsReadOnly();
 
         #endregion
 
         #region Constructors
+
         private Hive()
+        { }
+
+        public Hive(string description, EnHiveStatus status, int idUser)
         {
+            Ensure.NotEmpty(description, DomainError.Hive.InvalidHive.Message, nameof(description));
+            Ensure.GreaterThan(idUser, 0, DomainError.User.NotFound.Message, nameof(idUser));
+
+            Description = description;
+            Status = status;
+            IdUser = idUser;
             _contractedHives = new List<ContractedHive>();
-        }
-
-        public Hive(string description, EnHiveStatus status, Guid idUser)
-        {
-            AddNotifications(
-                new Contract<Notification>()
-                    .Requires()
-                    .IsNotEmpty(description, nameof(description), "The description is required.")
-                    .IsFalse(idUser == Guid.Empty, nameof(idUser), "The user id is required.")
-            );
-
-            if (IsValid)
-            {
-                Description = description;
-                Status = status;
-                IdUser = idUser;
-                CreatedAt = DateTime.Now;
-                LastUpdatedAt = null;
-                IsDeleted = false;
-                _contractedHives = new List<ContractedHive>();
-            }
         }
 
         #endregion
@@ -66,9 +55,7 @@ namespace uBee.Domain.Entities
 
         public void AddContractedHive(ContractedHive contractedHive)
         {
-            if (contractedHive == null)
-                throw new DomainException(DomainError.ContractedHive.InvalidHive);
-
+            Ensure.NotNull(contractedHive, DomainError.ContractedHive.InvalidHive.Message, nameof(contractedHive));
             _contractedHives.Add(contractedHive);
         }
 
@@ -105,15 +92,6 @@ namespace uBee.Domain.Entities
                 throw new DomainException(DomainError.Hive.CannotDecommission);
 
             Status = EnHiveStatus.Decommissioned;
-            LastUpdatedAt = DateTime.Now;
-        }
-
-        public void MarkAsDeleted()
-        {
-            if (IsDeleted)
-                throw new DomainException(DomainError.General.AlreadyDeleted);
-
-            IsDeleted = true;
             LastUpdatedAt = DateTime.Now;
         }
 

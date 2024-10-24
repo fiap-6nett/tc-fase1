@@ -1,6 +1,6 @@
 namespace uBee.Domain.Enumerations
 {
-    public enum EnUserRole
+    public enum EnUserRole : byte
     {
         Administrator = 1,
         Farmer = 2,

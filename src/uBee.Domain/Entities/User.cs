@@ -1,15 +1,15 @@
-using Flunt.Notifications;
-using Flunt.Validations;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
+using uBee.Domain.Core.Utility;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
+using uBee.Domain.ValueObjects;
 using uBee.Shared.Extensions;
 
 namespace uBee.Domain.Entities
 {
-    public class User : EntityBase, IAuditableEntity, ISoftDeletableEntity
+    public class User : AggregateRoot<int>, IAuditableEntity, ISoftDeletableEntity
     {
         #region Private Fields
 
@@ -20,107 +20,83 @@ namespace uBee.Domain.Entities
         #endregion
 
         #region Properties
+
         public string Name { get; private set; }
         public string Surname { get; private set; }
-        public string Email { get; private set; }
-        public string Phone { get; private set; }
-        public EnUserRole UserRole { get; private set; }
-        public EnLocation Location { get; private set; }
+        public CPF CPF { get; private set; }
+        public Email Email { get; private set; }
+        public Phone Phone { get; private set; }
+        public byte UserRole { get; private set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? LastUpdatedAt { get; private set; }
 
-        // Relationship
+        // Foreign Keys
+        public byte LocationId { get; private set; }
+        public Location Location { get; private set; }
+
+        // Compositions
         public IReadOnlyCollection<Hive> Hives => _hives.AsReadOnly();
         public IReadOnlyCollection<BeeContract> BeeContracts => _beeContracts.AsReadOnly();
 
         #endregion
 
         #region Constructors
-        private User() { }
 
-        public User(string name, string surname, string email, string phone, string passwordHash, EnUserRole userRole, EnLocation location)
+        private User()
+        { }
+
+        public User(string name, string surname, CPF cpf, Email email, Phone phone, string passwordHash, byte userRole, Location location)
         {
-            AddNotifications(
-                new Contract<Notification>()
-                    .Requires()
-                    .IsNotEmpty(name, nameof(name), "The name is required.")
-                    .IsNotEmpty(surname, nameof(surname), "The surname is required.")
-                    .IsEmail(email, nameof(email), "Please provide a valid email address.")
-                    .IsNotEmpty(phone, nameof(phone), "The phone number is required.")
-                    .IsNotEmpty(passwordHash, nameof(passwordHash), "The password is required.")
-                    .IsTrue(Enum.IsDefined(typeof(EnUserRole), userRole), nameof(userRole), "The user role is invalid.")
-                    .IsTrue(Enum.IsDefined(typeof(EnLocation), location), nameof(location), "The location is invalid.")
-            );
+            Ensure.NotEmpty(name, DomainError.User.NameIsRequired.Message, nameof(name));
+            Ensure.NotEmpty(surname, DomainError.User.SurnameIsRequired.Message, nameof(surname));
+            Ensure.NotEmpty(cpf, DomainError.CPF.InvalidFormat.Message, nameof(cpf));
+            Ensure.NotEmpty(email, DomainError.Email.NullOrEmpty.Message, nameof(email));
+            Ensure.NotEmpty(phone, DomainError.General.UnProcessableRequest.Message, nameof(phone));
+            Ensure.NotEmpty(passwordHash, DomainError.Password.NullOrEmpty.Message, nameof(passwordHash));
+            Ensure.NotNull(location, DomainError.General.InvalidDDD.Message, nameof(location));
 
-            if (IsValid)
-            {
-                Name = name;
-                Surname = surname;
-                Email = email;
-                Phone = phone;
-                _passwordHash = passwordHash;
-                UserRole = userRole;
-                Location = location;
-                CreatedAt = DateTime.Now;
-                LastUpdatedAt = null;
-                IsDeleted = false;
-                _hives = new List<Hive>();
-                _beeContracts = new List<BeeContract>();
-            }
+            if (!Enum.IsDefined(typeof(byte), userRole))
+                throw new ArgumentException(DomainError.User.InvalidPermissions.Message, nameof(userRole));
+
+            Name = name;
+            Surname = surname;
+            CPF = cpf;
+            Email = email;
+            Phone = phone;
+            _passwordHash = passwordHash;
+            UserRole = userRole;
+            LocationId = location.Id;
+            _hives = new List<Hive>();
+            _beeContracts = new List<BeeContract>();
         }
 
         #endregion
 
         #region Methods
-        public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
-            => !password.IsNullOrWhiteSpace() && passwordHashChecker.HashesMatch(_passwordHash, password);
 
-        public void ChangePassword(string passwordHash)
+        public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
         {
-            if (passwordHash == _passwordHash)
+            return !password.IsNullOrWhiteSpace() && passwordHashChecker.HashesMatch(_passwordHash, password);
+        }
+
+        public void ChangePassword(string newPasswordHash)
+        {
+            if (newPasswordHash == _passwordHash)
                 throw new DomainException(DomainError.User.CannotChangePassword);
 
-            _passwordHash = passwordHash;
+            _passwordHash = newPasswordHash;
             LastUpdatedAt = DateTime.Now;
         }
 
-        public void ChangeName(string name, string surname)
+        public void ChangeName(string newName, string newSurname)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new DomainException(DomainError.User.NameIsRequired);
+            Ensure.NotEmpty(newName, DomainError.User.NameIsRequired.Message, nameof(newName));
+            Ensure.NotEmpty(newSurname, DomainError.User.SurnameIsRequired.Message, nameof(newSurname));
 
-            if (string.IsNullOrWhiteSpace(surname))
-                throw new DomainException(DomainError.User.SurnameIsRequired);
-
-            Name = name;
-            Surname = surname;
-            LastUpdatedAt = DateTime.Now;
-        }
-
-        public void AddHive(Hive hive)
-        {
-            if (hive == null)
-                throw new DomainException(DomainError.Hive.InvalidHive);
-
-            _hives.Add(hive);
-        }
-
-        public void AddBeeContract(BeeContract beeContract)
-        {
-            if (beeContract == null)
-                throw new DomainException(DomainError.BeeContract.InvalidUser);
-
-            _beeContracts.Add(beeContract);
-        }
-
-        public void MarkAsDeleted()
-        {
-            if (IsDeleted)
-                throw new DomainException(DomainError.General.AlreadyDeleted);
-
-            IsDeleted = true;
+            Name = newName;
+            Surname = newSurname;
             LastUpdatedAt = DateTime.Now;
         }
 
