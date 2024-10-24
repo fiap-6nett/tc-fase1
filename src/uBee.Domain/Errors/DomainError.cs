@@ -54,7 +54,7 @@ namespace uBee.Domain.Errors
         public static class Location
         {
             public static Error InvalidAreaCode => new Error(
-                "General.InvalidAreaCode",
+                "Location.InvalidAreaCode",
                 "Invalid DDD. The provided DDD does not correspond to any valid region in Brazil. Please ensure the DDD is correct, e.g., '11' for São Paulo.");
         }
 

@@ -8,5 +8,9 @@ namespace uBee.Api.Contracts
             public const string Register = "authentication/register";
         }
 
+        public static class Users
+        {
+            public const string List = "users/list";
+        }
     }
 }
