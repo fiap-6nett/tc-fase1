@@ -19,6 +19,7 @@ namespace uBee.Persistence
             services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<uBeeContext>());
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
             return services;
         }

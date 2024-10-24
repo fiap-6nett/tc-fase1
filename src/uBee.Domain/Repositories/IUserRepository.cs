@@ -28,6 +28,20 @@ namespace uBee.Domain.Repositories
         Task<bool> IsEmailUniqueAsync(string email);
 
         /// <summary>
+        /// Checks if a Cpf is unique within the system.
+        /// </summary>
+        /// <param name="cpf">The Cpf to check.</param>
+        /// <returns>True if the Cpf is unique, false otherwise.</returns>
+        Task<bool> IsCpfUniqueAsync(string cpf);
+
+        /// <summary>
+        /// Checks if a phone number is unique within the system.
+        /// </summary>
+        /// <param name="phone">The phone number to check.</param>
+        /// <returns>True if the phone number is unique, false otherwise.</returns>
+        Task<bool> IsPhoneUniqueAsync(string phone);
+
+        /// <summary>
         /// Retrieves users by their location, filtered by DDD number or location name.
         /// </summary>
         /// <param name="dddNumber">The DDD number to filter by.</param>

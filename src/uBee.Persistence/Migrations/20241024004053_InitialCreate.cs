@@ -226,7 +226,7 @@ namespace uBee.Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "CreatedAt", "IsDeleted", "LastUpdatedAt", "LocationId", "Name", "Surname", "UserRole", "PasswordHash", "CPF", "Email", "Phone" },
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "LastUpdatedAt", "LocationId", "Name", "Surname", "UserRole", "PasswordHash", "Cpf", "Email", "Phone" },
                 values: new object[,]
                 {
                     { 10000, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Administrador", "(built-in)", (byte)1, "BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro", "80455390037", "admin@ubee.com", "11-983594962" },

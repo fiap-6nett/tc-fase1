@@ -14,10 +14,10 @@ namespace uBee.Domain.ValueObjects
 
         #region Read-Only Fields
 
-        private static readonly Func<char, bool> IsLower = c => c >= 'a' && c <= 'z';
-        private static readonly Func<char, bool> IsUpper = c => c >= 'A' && c <= 'Z';
-        private static readonly Func<char, bool> IsDigit = c => c >= '0' && c <= '9';
-        private static readonly Func<char, bool> IsNonAlphaNumeric = c => !(IsLower(c) || IsUpper(c) || IsDigit(c));
+        private static readonly Func<char, bool> IsLower = c => char.IsLower(c);
+        private static readonly Func<char, bool> IsUpper = c => char.IsUpper(c);
+        private static readonly Func<char, bool> IsDigit = c => char.IsDigit(c);
+        private static readonly Func<char, bool> IsNonAlphaNumeric = c => !char.IsLetterOrDigit(c);
 
         #endregion
 
@@ -43,16 +43,16 @@ namespace uBee.Domain.ValueObjects
             if (password.Length < MinPasswordLength)
                 throw new ArgumentException(DomainError.Password.TooShort.Message, nameof(password));
 
-            if (!password.ToCharArray().Any(IsLower))
+            if (!password.Any(IsLower))
                 throw new ArgumentException(DomainError.Password.MissingLowercaseLetter.Message, nameof(password));
 
-            if (!password.ToCharArray().Any(IsUpper))
+            if (!password.Any(IsUpper))
                 throw new ArgumentException(DomainError.Password.MissingUppercaseLetter.Message, nameof(password));
 
-            if (!password.ToCharArray().Any(IsDigit))
+            if (!password.Any(IsDigit))
                 throw new ArgumentException(DomainError.Password.MissingDigit.Message, nameof(password));
 
-            if (!password.ToCharArray().Any(IsNonAlphaNumeric))
+            if (!password.Any(IsNonAlphaNumeric))
                 throw new ArgumentException(DomainError.Password.MissingNonAlphaNumeric.Message, nameof(password));
 
             return new Password(password);
@@ -60,7 +60,7 @@ namespace uBee.Domain.ValueObjects
 
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -5,7 +5,6 @@ using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
 using uBee.Domain.ValueObjects;
-using uBee.Shared.Extensions;
 
 namespace uBee.Domain.Entities
 {
@@ -47,18 +46,18 @@ namespace uBee.Domain.Entities
         private User()
         { }
 
-        public User(string name, string surname, CPF cpf, Email email, Phone phone, string passwordHash, byte userRole, Location location)
+        public User(string name, string surname, CPF cpf, Email email, Phone phone, string passwordHash, byte userRole, byte locationId)
         {
             Ensure.NotEmpty(name, DomainError.User.NameIsRequired.Message, nameof(name));
             Ensure.NotEmpty(surname, DomainError.User.SurnameIsRequired.Message, nameof(surname));
-            Ensure.NotEmpty(cpf, DomainError.CPF.InvalidFormat.Message, nameof(cpf));
+            Ensure.NotEmpty(cpf, DomainError.Cpf.InvalidFormat.Message, nameof(cpf));
             Ensure.NotEmpty(email, DomainError.Email.NullOrEmpty.Message, nameof(email));
             Ensure.NotEmpty(phone, DomainError.General.UnProcessableRequest.Message, nameof(phone));
             Ensure.NotEmpty(passwordHash, DomainError.Password.NullOrEmpty.Message, nameof(passwordHash));
-            Ensure.NotNull(location, DomainError.General.InvalidDDD.Message, nameof(location));
+            Ensure.GreaterThan(locationId, 0, DomainError.Location.InvalidAreaCode.Message, nameof(locationId));
 
-            if (!Enum.IsDefined(typeof(byte), userRole))
-                throw new ArgumentException(DomainError.User.InvalidPermissions.Message, nameof(userRole));
+            if (!Enum.IsDefined(typeof(EnUserRole), userRole))
+                throw new ArgumentException(DomainError.UserRole.NotFound.Message, nameof(userRole));
 
             Name = name;
             Surname = surname;
@@ -67,7 +66,8 @@ namespace uBee.Domain.Entities
             Phone = phone;
             _passwordHash = passwordHash;
             UserRole = userRole;
-            LocationId = location.Id;
+            LocationId = locationId;
+            CreatedAt = DateTime.Now;
             _hives = new List<Hive>();
             _beeContracts = new List<BeeContract>();
         }
@@ -78,7 +78,7 @@ namespace uBee.Domain.Entities
 
         public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
         {
-            return !password.IsNullOrWhiteSpace() && passwordHashChecker.HashesMatch(_passwordHash, password);
+            return !string.IsNullOrWhiteSpace(password) && passwordHashChecker.HashesMatch(_passwordHash, password);
         }
 
         public void ChangePassword(string newPasswordHash)

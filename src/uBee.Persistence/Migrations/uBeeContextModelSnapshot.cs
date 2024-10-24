@@ -883,7 +883,7 @@ namespace uBee.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("uBee.Domain.ValueObjects.CPF", "CPF", b1 =>
+                    b.OwnsOne("uBee.Domain.ValueObjects.Cpf", "Cpf", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -892,7 +892,7 @@ namespace uBee.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(11)
                                 .HasColumnType("nvarchar(11)")
-                                .HasColumnName("CPF");
+                                .HasColumnName("Cpf");
 
                             b1.HasKey("UserId");
 
@@ -1036,7 +1036,7 @@ namespace uBee.Persistence.Migrations
                                 });
                         });
 
-                    b.Navigation("CPF")
+                    b.Navigation("Cpf")
                         .IsRequired();
 
                     b.Navigation("Email")

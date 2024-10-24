@@ -1,3 +1,4 @@
+using System.Linq;
 using uBee.Domain.Core.Primitives;
 using uBee.Domain.Errors;
 
@@ -27,18 +28,29 @@ namespace uBee.Domain.ValueObjects
 
         public static CPF Create(string cpf)
         {
-            if (string.IsNullOrWhiteSpace(cpf) || cpf.Length != MaxLength || !IsValidCPF(cpf))
-                throw new ArgumentException(DomainError.General.UnProcessableRequest.Message, nameof(cpf));
+            if (string.IsNullOrWhiteSpace(cpf))
+                throw new ArgumentException(DomainError.Cpf.InvalidFormat.Message, nameof(cpf));
 
-            return new CPF(cpf);
+            var cleanCPF = CleanCpf(cpf);
+            if (cleanCPF.Length != MaxLength)
+                throw new ArgumentException(DomainError.Cpf.InvalidFormat.Message, nameof(cpf));
+
+            if (!IsValidCPF(cleanCPF))
+                throw new ArgumentException(DomainError.Cpf.InvalidChecksum.Message, nameof(cpf));
+
+            return new CPF(cleanCPF);
+        }
+
+        private static string CleanCpf(string cpf)
+        {
+            return cpf.Trim().Replace(".", "").Replace("-", "");
         }
 
         private static bool IsValidCPF(string cpf)
         {
-            var cleanCPF = cpf.Trim().Replace(".", "").Replace("-", "");
-            if (cleanCPF.Length != 11 || cleanCPF.All(c => c == cleanCPF[0])) return false;
+            if (cpf.All(c => c == cpf[0])) return false;
 
-            var digits = cleanCPF.Select(c => int.Parse(c.ToString())).ToArray();
+            var digits = cpf.Select(c => int.Parse(c.ToString())).ToArray();
             var firstCheckSum = GetCPFChecksum(digits, 9);
             var secondCheckSum = GetCPFChecksum(digits, 10);
 

@@ -29,7 +29,7 @@ namespace uBee.Domain.Entities
         public Location(string name, int number)
         {
             Ensure.NotEmpty(name, DomainError.General.UnProcessableRequest.Message, nameof(name));
-            Ensure.GreaterThan(number, 0, DomainError.General.InvalidDDD.Message, nameof(number));
+            Ensure.GreaterThan(number, 0, DomainError.Location.InvalidAreaCode.Message, nameof(number));
 
             Name = name;
             Number = number;

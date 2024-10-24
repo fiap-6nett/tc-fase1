@@ -37,7 +37,7 @@ namespace uBee.Domain.ValueObjects
 
         public static Email Create(string email)
         {
-            if (email.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(email))
                 throw new ArgumentException(DomainError.Email.NullOrEmpty.Message, nameof(email));
 
             if (email.Length > MaxLength)
@@ -51,7 +51,7 @@ namespace uBee.Domain.ValueObjects
 
         #endregion
 
-        #region Overriden Methods
+        #region Overridden Methods
 
         protected override IEnumerable<object> GetAtomicValues()
         {
@@ -62,8 +62,7 @@ namespace uBee.Domain.ValueObjects
 
         #region Operators
 
-        public static implicit operator string(Email email)
-            => email.Value;
+        public static implicit operator string(Email email) => email.Value;
 
         #endregion
     }

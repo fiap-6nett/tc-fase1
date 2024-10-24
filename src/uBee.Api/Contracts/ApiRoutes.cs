@@ -5,6 +5,7 @@ namespace uBee.Api.Contracts
         public static class Authentication
         {
             public const string Login = "authentication/login";
+            public const string Register = "authentication/register";
         }
 
     }
