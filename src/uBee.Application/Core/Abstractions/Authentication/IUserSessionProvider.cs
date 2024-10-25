@@ -4,7 +4,7 @@ namespace uBee.Application.Core.Abstractions.Authentication
     {
         #region IUserSessionProvider Members
 
-        Guid IdUser { get; }
+        int IdUser { get; }
 
         #endregion
     }

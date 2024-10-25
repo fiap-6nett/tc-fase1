@@ -69,7 +69,7 @@ namespace uBee.Persistence.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdUser = table.Column<int>(type: "int", nullable: false)
@@ -93,7 +93,7 @@ namespace uBee.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdUser = table.Column<int>(type: "int", nullable: false)
@@ -115,7 +115,7 @@ namespace uBee.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdBeeContract = table.Column<int>(type: "int", nullable: false),
@@ -226,15 +226,15 @@ namespace uBee.Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "Id", "CreatedAt", "IsDeleted", "LastUpdatedAt", "LocationId", "Name", "Surname", "UserRole", "PasswordHash", "Cpf", "Email", "Phone" },
+                columns: new[] { "Id", "Phone", "CreatedAt", "IsDeleted", "LastUpdatedAt", "LocationId", "Name", "Surname", "UserRole", "PasswordHash", "CPF", "Email" },
                 values: new object[,]
                 {
-                    { 10000, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Administrador", "(built-in)", (byte)1, "BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro", "80455390037", "admin@ubee.com", "11-983594962" },
-                    { 10001, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Cleber", "(built-in)", (byte)2, "AxX8E7IFxv4rSTXU40IRjY6oPLVOq1y1tp0O5/vabDT/SPZlOWdktbiKCz2YLdzJ", "87622041068", "cleber@ubee.com", "11-992504176" },
-                    { 10002, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)29, "Diego", "(built-in)", (byte)3, "SlZEzmsPcuYfe8GRqN9lMLqv5KJpVmGpChaRoS5YVYQo/sSdeY6G5xj+nLF7zxJR", "40070242003", "diego@ubee.com", "48-91662888" },
-                    { 10003, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Lucas", "(built-in)", (byte)3, "Wa+ZKmUcoWjcVPjQwVzY3tok2Thcejh2fGlA2lwZXv2oZ0NxL6Kb71NPYB8LP2De", "99872134057", "lucas@ubee.com", "11-994635700" },
-                    { 10004, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)5, "Rafael", "(built-in)", (byte)2, "tiNsfaj8kjCoJJcJeNyQqn03Ym4vuQldu3T+QL0AtJ9OzfkZcwo8UCd5+UcTDzEa", "46074925070", "rafael@ubee.com", "15-998106370" },
-                    { 10005, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)4, "Wesley", "(built-in)", (byte)3, "V8xyPoBEnUEUKLq5dxW5hqk8yiD42kfs1BMd8fKRkgrL9Ad1cA95US4avnA4TPYz", "10096759070", "wesley@ubee.com", "14-981343266" }
+                    { 10000, "11-983594962", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Administrador", "(built-in)", (byte)1, "BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro", "80455390037", "admin@ubee.com" },
+                    { 10001, "11-992504176", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Cleber", "(built-in)", (byte)2, "AxX8E7IFxv4rSTXU40IRjY6oPLVOq1y1tp0O5/vabDT/SPZlOWdktbiKCz2YLdzJ", "87622041068", "cleber@ubee.com" },
+                    { 10002, "48-91662888", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)29, "Diego", "(built-in)", (byte)3, "SlZEzmsPcuYfe8GRqN9lMLqv5KJpVmGpChaRoS5YVYQo/sSdeY6G5xj+nLF7zxJR", "40070242003", "diego@ubee.com" },
+                    { 10003, "11-994635700", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)1, "Lucas", "(built-in)", (byte)3, "Wa+ZKmUcoWjcVPjQwVzY3tok2Thcejh2fGlA2lwZXv2oZ0NxL6Kb71NPYB8LP2De", "99872134057", "lucas@ubee.com" },
+                    { 10004, "15-998106370", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)5, "Rafael", "(built-in)", (byte)2, "tiNsfaj8kjCoJJcJeNyQqn03Ym4vuQldu3T+QL0AtJ9OzfkZcwo8UCd5+UcTDzEa", "46074925070", "rafael@ubee.com" },
+                    { 10005, "14-981343266", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, null, (byte)4, "Wesley", "(built-in)", (byte)3, "V8xyPoBEnUEUKLq5dxW5hqk8yiD42kfs1BMd8fKRkgrL9Ad1cA95US4avnA4TPYz", "10096759070", "wesley@ubee.com" }
                 });
 
             migrationBuilder.CreateIndex(

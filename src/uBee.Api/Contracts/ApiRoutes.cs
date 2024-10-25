@@ -10,7 +10,10 @@ namespace uBee.Api.Contracts
 
         public static class Users
         {
-            public const string List = "users/list";
+            public const string Get = "users";
+            public const string GetMyProfile = "users/me";
+            public const string DeleteMyProfile = "users/me/delete";
+            public const string ChangePassword = "users/me/change-password";
         }
     }
 }

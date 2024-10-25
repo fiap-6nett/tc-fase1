@@ -4,5 +4,5 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public record ListUsersQuery(int DDD, int Page, int PageSize) : IQuery<PagedList<UserResponse>>;
+    public record GetUsersQuery(int DDD, int Page, int PageSize) : IQuery<PagedList<UserResponse>>;
 }

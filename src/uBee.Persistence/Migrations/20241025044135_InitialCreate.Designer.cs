@@ -12,7 +12,7 @@ using uBee.Persistence;
 namespace uBee.Persistence.Migrations
 {
     [DbContext(typeof(uBeeContext))]
-    [Migration("20241024004053_InitialCreate")]
+    [Migration("20241025044135_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -43,9 +43,7 @@ namespace uBee.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -90,9 +88,7 @@ namespace uBee.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -130,9 +126,7 @@ namespace uBee.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -886,7 +880,58 @@ namespace uBee.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.OwnsOne("uBee.Domain.ValueObjects.Cpf", "Cpf", b1 =>
+                    b.OwnsOne("Phone", "Phone", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(12)
+                                .HasColumnType("nvarchar(12)")
+                                .HasColumnName("Phone");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = 10000,
+                                    Value = "11-983594962"
+                                },
+                                new
+                                {
+                                    UserId = 10001,
+                                    Value = "11-992504176"
+                                },
+                                new
+                                {
+                                    UserId = 10002,
+                                    Value = "48-91662888"
+                                },
+                                new
+                                {
+                                    UserId = 10003,
+                                    Value = "11-994635700"
+                                },
+                                new
+                                {
+                                    UserId = 10004,
+                                    Value = "15-998106370"
+                                },
+                                new
+                                {
+                                    UserId = 10005,
+                                    Value = "14-981343266"
+                                });
+                        });
+
+                    b.OwnsOne("uBee.Domain.ValueObjects.CPF", "CPF", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -895,7 +940,7 @@ namespace uBee.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(11)
                                 .HasColumnType("nvarchar(11)")
-                                .HasColumnName("Cpf");
+                                .HasColumnName("CPF");
 
                             b1.HasKey("UserId");
 
@@ -988,58 +1033,7 @@ namespace uBee.Persistence.Migrations
                                 });
                         });
 
-                    b.OwnsOne("uBee.Domain.ValueObjects.Phone", "Phone", b1 =>
-                        {
-                            b1.Property<int>("UserId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(12)
-                                .HasColumnType("nvarchar(12)")
-                                .HasColumnName("Phone");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("users");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    UserId = 10000,
-                                    Value = "11-983594962"
-                                },
-                                new
-                                {
-                                    UserId = 10001,
-                                    Value = "11-992504176"
-                                },
-                                new
-                                {
-                                    UserId = 10002,
-                                    Value = "48-91662888"
-                                },
-                                new
-                                {
-                                    UserId = 10003,
-                                    Value = "11-994635700"
-                                },
-                                new
-                                {
-                                    UserId = 10004,
-                                    Value = "15-998106370"
-                                },
-                                new
-                                {
-                                    UserId = 10005,
-                                    Value = "14-981343266"
-                                });
-                        });
-
-                    b.Navigation("Cpf")
+                    b.Navigation("CPF")
                         .IsRequired();
 
                     b.Navigation("Email")

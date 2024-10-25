@@ -37,6 +37,12 @@ namespace uBee.Persistence.Configurations
                    .HasForeignKey(u => u.LocationId)
                    .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Property(p => p.IsDeleted);
+            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.LastUpdatedAt);
+
+            builder.HasQueryFilter(p => !p.IsDeleted);
+
             SeedBuiltInLocations(builder);
         }
 

@@ -100,6 +100,15 @@ namespace uBee.Domain.Entities
             LastUpdatedAt = DateTime.Now;
         }
 
+        public void SoftDelete()
+        {
+            if (IsDeleted)
+                throw new DomainException(DomainError.User.AlreadyDeleted);
+
+            IsDeleted = true;
+            LastUpdatedAt = DateTime.Now;
+        }
+
         #endregion
     }
 }

@@ -44,8 +44,8 @@ namespace uBee.Application.Authentication
         public async Task<TokenResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var emailResult = Email.Create(request.Email);
-            if (!await _userRepository.IsEmailUniqueAsync(emailResult))
-                throw new DomainException(DomainError.User.DuplicateEmail);
+            if (!await _userRepository.IsEmailUniqueAsync(emailResult.Value))
+                throw new DomainException(DomainError.User.EmailUnavailable);
 
             var cpfResult = CPF.Create(request.Cpf);
             if (!await _userRepository.IsCpfUniqueAsync(cpfResult.Value))
@@ -77,5 +77,6 @@ namespace uBee.Application.Authentication
 
             return new TokenResponse(_jwtProvider.Create(user));
         }
+
     }
 }

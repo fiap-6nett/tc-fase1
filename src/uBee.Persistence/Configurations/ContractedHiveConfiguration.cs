@@ -12,12 +12,6 @@ namespace uBee.Persistence.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.CreatedAt)
-                   .IsRequired();
-
-            builder.Property(c => c.LastUpdatedAt)
-                   .IsRequired(false);
-
             builder.HasOne(c => c.BeeContract)
                    .WithMany()
                    .HasForeignKey(c => c.IdBeeContract)
@@ -28,10 +22,11 @@ namespace uBee.Persistence.Configurations
                    .HasForeignKey(c => c.IdHive)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(c => c.IsDeleted)
-                   .HasDefaultValue(false);
+            builder.Property(p => p.IsDeleted);
+            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.LastUpdatedAt);
 
-            builder.HasQueryFilter(c => !c.IsDeleted);
+            builder.HasQueryFilter(p => !p.IsDeleted);
         }
     }
 }

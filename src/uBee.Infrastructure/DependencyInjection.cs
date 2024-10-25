@@ -34,6 +34,8 @@ namespace uBee.Infrastructure
 
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SettingsKey));
 
+            services.AddAuthorization();
+
             services.AddScoped<IUserSessionProvider, UserSessionProvider>();
             services.AddScoped<IJwtProvider, JwtProvider>();
 

@@ -32,8 +32,9 @@ namespace uBee.Application.Authentication
         public async Task<TokenResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
+
             if (user is null)
-                throw new DomainException(DomainError.Authentication.InvalidEmailOrPassword);
+                throw new DomainException(DomainError.Authentication.EmailNotRegistered);
 
             var passwordValid = user.VerifyPasswordHash(request.Password, _passwordHashChecker);
             if (!passwordValid)

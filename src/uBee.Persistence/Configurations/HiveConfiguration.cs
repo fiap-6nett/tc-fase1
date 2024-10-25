@@ -19,21 +19,16 @@ namespace uBee.Persistence.Configurations
             builder.Property(h => h.Status)
                    .IsRequired();
 
-            builder.Property(h => h.IsDeleted)
-                   .HasDefaultValue(false);
-
-            builder.Property(h => h.CreatedAt)
-                   .IsRequired();
-
-            builder.Property(h => h.LastUpdatedAt)
-                   .IsRequired(false);
-
             builder.HasOne(h => h.User)
                    .WithMany(u => u.Hives)
                    .HasForeignKey(h => h.IdUser)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasQueryFilter(h => !h.IsDeleted);
+            builder.Property(p => p.IsDeleted);
+            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.LastUpdatedAt);
+
+            builder.HasQueryFilter(p => !p.IsDeleted);
         }
     }
 }

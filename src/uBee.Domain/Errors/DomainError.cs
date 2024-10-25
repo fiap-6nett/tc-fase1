@@ -26,9 +26,9 @@ namespace uBee.Domain.Errors
                 "User.NotFound",
                 "The user with the specified identifier was not found.");
 
-            public static Error DuplicateEmail => new Error(
-                "User.DuplicateEmail",
-                "The specified email is already in use.");
+            public static Error EmailUnavailable => new Error(
+                "User.EmailUnavailable",
+                "The specified email is unavailable for use or is already in use.");
 
             public static Error DuplicateCpf => new Error(
                 "User.DuplicateCpf",
@@ -49,6 +49,10 @@ namespace uBee.Domain.Errors
             public static Error SurnameIsRequired = new Error(
                 "User.SurnameIsRequired",
                 "The user surname is required.");
+
+            public static Error AlreadyDeleted => new Error(
+                "User.AlreadyDeleted",
+                "The user has already been deleted.");
         }
 
         public static class Location
@@ -169,6 +173,10 @@ namespace uBee.Domain.Errors
             public static Error MissingNonAlphaNumeric => new Error(
                 "Password.MissingNonAlphaNumeric",
                 "The password must contain at least one non-alphanumeric character.");
+
+            public static Error InvalidCurrentPassword => new Error(
+                "Password.InvalidPassword",
+                "The specified current password is incorrect.");
         }
 
         #endregion
@@ -190,6 +198,14 @@ namespace uBee.Domain.Errors
             public static Error InvalidEmailOrPassword => new Error(
                 "Authentication.InvalidEmailOrPassword",
                 "The specified email or password is incorrect.");
+
+            public static Error AccountDeleted => new Error(
+                "Authentication.AccountDeleted",
+                "The account has been deleted. Please contact support for assistance.");
+
+            public static Error EmailNotRegistered => new Error(
+                "Authentication.EmailNotRegistered",
+                "The specified email is not registered in the system.");
         }
         #endregion
     }

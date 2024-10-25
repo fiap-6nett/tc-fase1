@@ -17,17 +17,16 @@ namespace uBee.Api.Extensions
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "uBee - API",
-                    Version = "v1"
+                    Version = "v1",
                 });
 
-                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Description = "JWT Authorization header using the Bearer scheme.",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
                 });
 
                 setup.AddSecurityRequirement(new OpenApiSecurityRequirement

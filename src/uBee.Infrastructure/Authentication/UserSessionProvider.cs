@@ -8,7 +8,7 @@ namespace uBee.Infrastructure.Authentication
     {
         #region IUserSessionProvider Members
 
-        public Guid IdUser { get; }
+        public int IdUser { get; }
 
         #endregion
 
@@ -17,7 +17,7 @@ namespace uBee.Infrastructure.Authentication
         public UserSessionProvider(IHttpContextAccessor httpContextAccessor)
         {
             var userIdClaim = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!Guid.TryParse(userIdClaim, out var idUser))
+            if (!int.TryParse(userIdClaim, out var idUser))
             {
                 throw new ArgumentException("The user identifier claim is required.", nameof(httpContextAccessor));
             }

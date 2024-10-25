@@ -12,7 +12,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public class ListUsersQueryHandler : IQueryHandler<ListUsersQuery, PagedList<UserResponse>>
+    public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedList<UserResponse>>
     {
         #region Read-Only Fields
 
@@ -24,7 +24,7 @@ namespace uBee.Application.Users
 
         #region Constructors
 
-        public ListUsersQueryHandler(IUserRepository userRepository, ILocationRepository locationRepository, IDbContext dbContext)
+        public GetUsersQueryHandler(IUserRepository userRepository, ILocationRepository locationRepository, IDbContext dbContext)
         {
             _userRepository = userRepository;
             _locationRepository = locationRepository;
@@ -33,7 +33,7 @@ namespace uBee.Application.Users
 
         #endregion
 
-        public async Task<PagedList<UserResponse>> Handle(ListUsersQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<UserResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             IQueryable<UserResponse> usersQuery;
 
