@@ -65,7 +65,7 @@ namespace uBee.Persistence.Configurations
 
             var users = new List<object>
             {
-                 new { Id = Guid.NewGuid(), Name = "Administradorrr", Surname = "(built-in)",   Email = "admin@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Administrator,  _passwordHash = passwordHasher.HashPassword(Password.Create("Admin@123")),    Location = EnLocation.SaoPauloCity },
+                 new { Id = Guid.NewGuid(), Name = "Administrador", Surname = "(built-in)",   Email = "admin@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Administrator,  _passwordHash = passwordHasher.HashPassword(Password.Create("Admin@123")),    Location = EnLocation.SaoPauloCity },
                  new { Id = Guid.NewGuid(), Name = "Cleber",        Surname = "(built-in)",   Email = "cleber@ubee.com",   Phone = "999999991", UserRole = EnUserRole.Beekeeper,      _passwordHash = passwordHasher.HashPassword(Password.Create("Cleber@123")),   Location = EnLocation.SorocabaRegion },
                  new { Id = Guid.NewGuid(), Name = "Diego",         Surname = "(built-in)",   Email = "diego@ubee.com",    Phone = "999999992", UserRole = EnUserRole.Farmer,         _passwordHash = passwordHasher.HashPassword(Password.Create("Diego@123")),    Location = EnLocation.SorocabaRegion },
                  new { Id = Guid.NewGuid(), Name = "Lucas",         Surname = "(built-in)",   Email = "lucas@ubee.com",    Phone = "999999993", UserRole = EnUserRole.Farmer,         _passwordHash = passwordHasher.HashPassword(Password.Create("Lucas@123")),    Location = EnLocation.SaoPauloCity },
