@@ -38,7 +38,8 @@ namespace uBee.Infrastructure.Authentication
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name.ToString()),
                 new Claim(ClaimTypes.Surname, user.Surname.ToString()),
-                new Claim(ClaimTypes.Email, user.Email.ToString())
+                new Claim(ClaimTypes.Email, user.Email.ToString()),
+                new Claim("UserRole", user.UserRole.ToString())
             };
 
             var tokenExpirationTime = DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes);

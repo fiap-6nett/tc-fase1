@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using uBee.Domain.Entities;
-using uBee.Domain.Enumerations;
 using uBee.Domain.ValueObjects;
-using uBee.Infrastructure.Cryptography;
 
 namespace uBee.Persistence.Configurations
 {
@@ -13,67 +11,102 @@ namespace uBee.Persistence.Configurations
         {
             builder.ToTable("users");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(u => u.Id);
 
-            builder.Property(x => x.Name)
-                   .HasMaxLength(80)
-                   .IsRequired();
+            builder.Property(u => u.Name)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            builder.Property(x => x.Surname)
-                   .HasMaxLength(150)
-                   .IsRequired();
+            builder.Property(u => u.Surname)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            builder.Property(x => x.Email)
-                   .HasMaxLength(150)
-                   .IsRequired();
+            builder.OwnsOne(p => p.Email, builder =>
+            {
+                builder.WithOwner();
+                builder.Property(email => email.Value)
+                    .HasColumnName(nameof(User.Email))
+                    .HasMaxLength(Email.MaxLength)
+                    .IsRequired();
+            });
 
-            builder.HasIndex(x => x.Email).IsUnique();
+            builder.OwnsOne(p => p.CPF, builder =>
+            {
+                builder.WithOwner();
+                builder.Property(cpf => cpf.Value)
+                    .HasColumnName(nameof(User.CPF))
+                    .HasMaxLength(CPF.MaxLength)
+                    .IsRequired();
+            });
 
-            builder.Property(x => x.Phone)
-                   .HasMaxLength(15)
-                   .IsRequired();
+            builder.OwnsOne(p => p.Phone, builder =>
+            {
+                builder.WithOwner();
+                builder.Property(phone => phone.Value)
+                    .HasColumnName(nameof(User.Phone))
+                    .HasMaxLength(Phone.MaxLength)
+                    .IsRequired();
+            });
 
-            builder.HasIndex(x => x.Phone).IsUnique();
+            builder.Property("_passwordHash")
+                .HasColumnName("PasswordHash")
+                .IsRequired();
 
-            builder.Property<string>("_passwordHash")
-                   .HasColumnName("PasswordHash")
-                   .IsRequired();
+            builder.HasOne(u => u.Location)
+                .WithMany(l => l.Users)
+                .HasForeignKey(u => u.LocationId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.UserRole)
-                   .IsRequired();
+            builder.Property(p => p.IsDeleted);
+            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.LastUpdatedAt);
 
-            builder.Property(x => x.Location)
-                   .IsRequired();
+            builder.HasQueryFilter(p => !p.IsDeleted);
 
-            builder.Property(x => x.IsDeleted)
-                   .HasDefaultValue(false);
-
-            builder.Property(x => x.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()")
-                   .IsRequired();
-
-            builder.Property(x => x.LastUpdatedAt);
-
-            builder.HasQueryFilter(x => !x.IsDeleted);
-
-            SeedInitialUsers(builder);
+            SeedBuiltInUsers(builder);
         }
 
-        private void SeedInitialUsers(EntityTypeBuilder<User> builder)
+        private void SeedBuiltInUsers(EntityTypeBuilder<User> builder)
         {
-            var passwordHasher = new PasswordHasher();
-
-            var users = new List<object>
+            var users = new List<(int Id, byte LocationId, string Name, string Surname, CPF Cpf, Email Email, Phone Phone, byte UserRole, string PasswordHash)>
             {
-                 new { Id = Guid.NewGuid(), Name = "Administrador", Surname = "(built-in)",   Email = "admin@ubee.com",    Phone = "999999999", UserRole = EnUserRole.Administrator,  _passwordHash = passwordHasher.HashPassword(Password.Create("Admin@123")),    Location = EnLocation.SaoPauloCity },
-                 new { Id = Guid.NewGuid(), Name = "Cleber",        Surname = "(built-in)",   Email = "cleber@ubee.com",   Phone = "999999991", UserRole = EnUserRole.Beekeeper,      _passwordHash = passwordHasher.HashPassword(Password.Create("Cleber@123")),   Location = EnLocation.SorocabaRegion },
-                 new { Id = Guid.NewGuid(), Name = "Diego",         Surname = "(built-in)",   Email = "diego@ubee.com",    Phone = "999999992", UserRole = EnUserRole.Farmer,         _passwordHash = passwordHasher.HashPassword(Password.Create("Diego@123")),    Location = EnLocation.SorocabaRegion },
-                 new { Id = Guid.NewGuid(), Name = "Lucas",         Surname = "(built-in)",   Email = "lucas@ubee.com",    Phone = "999999993", UserRole = EnUserRole.Farmer,         _passwordHash = passwordHasher.HashPassword(Password.Create("Lucas@123")),    Location = EnLocation.SaoPauloCity },
-                 new { Id = Guid.NewGuid(), Name = "Rafael",        Surname = "(built-in)",   Email = "rafael@ubee.com",   Phone = "999999994", UserRole = EnUserRole.Beekeeper,      _passwordHash = passwordHasher.HashPassword(Password.Create("Rafael@123")),   Location = EnLocation.SaoPauloCity },
-                 new { Id = Guid.NewGuid(), Name = "Wesley",        Surname = "(built-in)",   Email = "wesley@ubee.com",   Phone = "999999995", UserRole = EnUserRole.Farmer,         _passwordHash = passwordHasher.HashPassword(Password.Create("Wesley@123")),   Location = EnLocation.RioDeJaneiroCity }
+                (10_000, 1,     "Administrador",    "(built-in)",   CPF.Create("80455390037"), Email.Create("admin@ubee.com"),  Phone.Create("11-983594962"), 1, @"BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro"), // Password: Admin@123
+                (10_001, 1,     "Cleber",           "(built-in)",   CPF.Create("87622041068"), Email.Create("cleber@ubee.com"), Phone.Create("11-992504176"), 2, @"AxX8E7IFxv4rSTXU40IRjY6oPLVOq1y1tp0O5/vabDT/SPZlOWdktbiKCz2YLdzJ"), // Password: Cleber@123
+                (10_002, 29,    "Diego",            "(built-in)",   CPF.Create("40070242003"), Email.Create("diego@ubee.com"),  Phone.Create("48-91662888"),  3, @"SlZEzmsPcuYfe8GRqN9lMLqv5KJpVmGpChaRoS5YVYQo/sSdeY6G5xj+nLF7zxJR"), // Password: Diego@123
+                (10_003, 1,     "Lucas",            "(built-in)",   CPF.Create("99872134057"), Email.Create("lucas@ubee.com"),  Phone.Create("11-994635700"), 3, @"Wa+ZKmUcoWjcVPjQwVzY3tok2Thcejh2fGlA2lwZXv2oZ0NxL6Kb71NPYB8LP2De"), // Password: Lucas@123
+                (10_004, 5,     "Rafael",           "(built-in)",   CPF.Create("46074925070"), Email.Create("rafael@ubee.com"), Phone.Create("15-998106370"), 2, @"tiNsfaj8kjCoJJcJeNyQqn03Ym4vuQldu3T+QL0AtJ9OzfkZcwo8UCd5+UcTDzEa"), // Password: Rafael@123
+                (10_005, 4,     "Wesley",           "(built-in)",   CPF.Create("10096759070"), Email.Create("wesley@ubee.com"), Phone.Create("14-981343266"), 3, @"V8xyPoBEnUEUKLq5dxW5hqk8yiD42kfs1BMd8fKRkgrL9Ad1cA95US4avnA4TPYz")  // Password: Wesley@123
             };
 
-            builder.HasData(users);
+            builder.HasData(users.Select(user => new
+            {
+                user.Id,
+                user.Name,
+                user.Surname,
+                user.LocationId,
+                user.UserRole,
+                CreatedAt = DateTime.MinValue.Date,
+                IsDeleted = false,
+                _passwordHash = user.PasswordHash
+            }));
+
+            builder.OwnsOne(p => p.CPF).HasData(users.Select(user => new
+            {
+                UserId = user.Id,
+                user.Cpf.Value
+            }));
+
+            builder.OwnsOne(p => p.Email).HasData(users.Select(user => new
+            {
+                UserId = user.Id,
+                user.Email.Value
+            }));
+
+            builder.OwnsOne(p => p.Phone).HasData(users.Select(user => new
+            {
+                UserId = user.Id,
+                user.Phone.Value
+            }));
         }
     }
 }

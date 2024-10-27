@@ -16,8 +16,4 @@
     <ProjectReference Include="..\uBee.Domain\uBee.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\Authentication\" />
-  </ItemGroup>
-
 </Project>

@@ -24,9 +24,11 @@ namespace uBee.Persistence.Migrations
 
             modelBuilder.Entity("uBee.Domain.Entities.BeeContract", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -34,13 +36,11 @@ namespace uBee.Persistence.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -63,29 +63,29 @@ namespace uBee.Persistence.Migrations
 
             modelBuilder.Entity("uBee.Domain.Entities.ContractedHive", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("BeeContractId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BeeContractId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("HiveId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("HiveId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("IdBeeContract")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("IdBeeContract")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("IdHive")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("IdHive")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -105,9 +105,11 @@ namespace uBee.Persistence.Migrations
 
             modelBuilder.Entity("uBee.Domain.Entities.Hive", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -117,13 +119,11 @@ namespace uBee.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
@@ -138,50 +138,607 @@ namespace uBee.Persistence.Migrations
                     b.ToTable("hives", (string)null);
                 });
 
-            modelBuilder.Entity("uBee.Domain.Entities.User", b =>
+            modelBuilder.Entity("uBee.Domain.Entities.Location", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("tinyint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<byte>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Location")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int")
+                        .HasColumnName("DDD");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("locations", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (byte)1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "São Paulo - Capital",
+                            Number = 11
+                        },
+                        new
+                        {
+                            Id = (byte)2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "São José dos Campos e Região",
+                            Number = 12
+                        },
+                        new
+                        {
+                            Id = (byte)3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Baixada Santista e Região",
+                            Number = 13
+                        },
+                        new
+                        {
+                            Id = (byte)4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Bauru e Região",
+                            Number = 14
+                        },
+                        new
+                        {
+                            Id = (byte)5,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Sorocaba e Região",
+                            Number = 15
+                        },
+                        new
+                        {
+                            Id = (byte)6,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Ribeirão Preto e Região",
+                            Number = 16
+                        },
+                        new
+                        {
+                            Id = (byte)7,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "São José do Rio Preto e Região",
+                            Number = 17
+                        },
+                        new
+                        {
+                            Id = (byte)8,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Presidente Prudente e Região",
+                            Number = 18
+                        },
+                        new
+                        {
+                            Id = (byte)9,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Campinas e Região",
+                            Number = 19
+                        },
+                        new
+                        {
+                            Id = (byte)10,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Rio de Janeiro - Capital",
+                            Number = 21
+                        },
+                        new
+                        {
+                            Id = (byte)11,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Campos dos Goytacazes e Região",
+                            Number = 22
+                        },
+                        new
+                        {
+                            Id = (byte)12,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Volta Redonda e Região",
+                            Number = 24
+                        },
+                        new
+                        {
+                            Id = (byte)13,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Vitória e Região",
+                            Number = 27
+                        },
+                        new
+                        {
+                            Id = (byte)14,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Sul do Espírito Santo",
+                            Number = 28
+                        },
+                        new
+                        {
+                            Id = (byte)15,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Belo Horizonte e Região",
+                            Number = 31
+                        },
+                        new
+                        {
+                            Id = (byte)16,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Juiz de Fora e Região",
+                            Number = 32
+                        },
+                        new
+                        {
+                            Id = (byte)17,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Governador Valadares e Região",
+                            Number = 33
+                        },
+                        new
+                        {
+                            Id = (byte)18,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Uberlândia e Região",
+                            Number = 34
+                        },
+                        new
+                        {
+                            Id = (byte)19,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Poços de Caldas e Região",
+                            Number = 35
+                        },
+                        new
+                        {
+                            Id = (byte)20,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Divinópolis e Região",
+                            Number = 37
+                        },
+                        new
+                        {
+                            Id = (byte)21,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Montes Claros e Região",
+                            Number = 38
+                        },
+                        new
+                        {
+                            Id = (byte)22,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Curitiba e Região",
+                            Number = 41
+                        },
+                        new
+                        {
+                            Id = (byte)23,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Ponta Grossa e Região",
+                            Number = 42
+                        },
+                        new
+                        {
+                            Id = (byte)24,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Londrina e Região",
+                            Number = 43
+                        },
+                        new
+                        {
+                            Id = (byte)25,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Maringá e Região",
+                            Number = 44
+                        },
+                        new
+                        {
+                            Id = (byte)26,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Foz do Iguaçu e Região",
+                            Number = 45
+                        },
+                        new
+                        {
+                            Id = (byte)27,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Pato Branco e Região",
+                            Number = 46
+                        },
+                        new
+                        {
+                            Id = (byte)28,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Joinville e Região",
+                            Number = 47
+                        },
+                        new
+                        {
+                            Id = (byte)29,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Florianópolis e Região",
+                            Number = 48
+                        },
+                        new
+                        {
+                            Id = (byte)30,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Chapecó e Região",
+                            Number = 49
+                        },
+                        new
+                        {
+                            Id = (byte)31,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Porto Alegre e Região",
+                            Number = 51
+                        },
+                        new
+                        {
+                            Id = (byte)32,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Pelotas e Região",
+                            Number = 53
+                        },
+                        new
+                        {
+                            Id = (byte)33,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Caxias do Sul e Região",
+                            Number = 54
+                        },
+                        new
+                        {
+                            Id = (byte)34,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Santa Maria e Região",
+                            Number = 55
+                        },
+                        new
+                        {
+                            Id = (byte)35,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Distrito Federal",
+                            Number = 61
+                        },
+                        new
+                        {
+                            Id = (byte)36,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Goiânia e Região",
+                            Number = 62
+                        },
+                        new
+                        {
+                            Id = (byte)37,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Tocantins",
+                            Number = 63
+                        },
+                        new
+                        {
+                            Id = (byte)38,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Rio Verde e Região",
+                            Number = 64
+                        },
+                        new
+                        {
+                            Id = (byte)39,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Cuiabá e Região",
+                            Number = 65
+                        },
+                        new
+                        {
+                            Id = (byte)40,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Rondonópolis e Região",
+                            Number = 66
+                        },
+                        new
+                        {
+                            Id = (byte)41,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Campo Grande e Região",
+                            Number = 67
+                        },
+                        new
+                        {
+                            Id = (byte)42,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Acre",
+                            Number = 68
+                        },
+                        new
+                        {
+                            Id = (byte)43,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Rondônia",
+                            Number = 69
+                        },
+                        new
+                        {
+                            Id = (byte)44,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Salvador e Região",
+                            Number = 71
+                        },
+                        new
+                        {
+                            Id = (byte)45,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Ilhéus e Região",
+                            Number = 73
+                        },
+                        new
+                        {
+                            Id = (byte)46,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Juazeiro e Região",
+                            Number = 74
+                        },
+                        new
+                        {
+                            Id = (byte)47,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Feira de Santana e Região",
+                            Number = 75
+                        },
+                        new
+                        {
+                            Id = (byte)48,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Barreiras e Região",
+                            Number = 77
+                        },
+                        new
+                        {
+                            Id = (byte)49,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Sergipe",
+                            Number = 79
+                        },
+                        new
+                        {
+                            Id = (byte)50,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Recife e Região",
+                            Number = 81
+                        },
+                        new
+                        {
+                            Id = (byte)51,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Alagoas",
+                            Number = 82
+                        },
+                        new
+                        {
+                            Id = (byte)52,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Paraíba",
+                            Number = 83
+                        },
+                        new
+                        {
+                            Id = (byte)53,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Rio Grande do Norte",
+                            Number = 84
+                        },
+                        new
+                        {
+                            Id = (byte)54,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Fortaleza e Região",
+                            Number = 85
+                        },
+                        new
+                        {
+                            Id = (byte)55,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Teresina e Região",
+                            Number = 86
+                        },
+                        new
+                        {
+                            Id = (byte)56,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Petrolina e Região",
+                            Number = 87
+                        },
+                        new
+                        {
+                            Id = (byte)57,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Região do Cariri",
+                            Number = 88
+                        },
+                        new
+                        {
+                            Id = (byte)58,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Piauí exceto Teresina",
+                            Number = 89
+                        },
+                        new
+                        {
+                            Id = (byte)59,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Belém e Região",
+                            Number = 91
+                        },
+                        new
+                        {
+                            Id = (byte)60,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Manaus e Região",
+                            Number = 92
+                        },
+                        new
+                        {
+                            Id = (byte)61,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Santarém e Região",
+                            Number = 93
+                        },
+                        new
+                        {
+                            Id = (byte)62,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Marabá e Região",
+                            Number = 94
+                        },
+                        new
+                        {
+                            Id = (byte)63,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Roraima",
+                            Number = 95
+                        },
+                        new
+                        {
+                            Id = (byte)64,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Amapá",
+                            Number = 96
+                        },
+                        new
+                        {
+                            Id = (byte)65,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Amazonas",
+                            Number = 97
+                        },
+                        new
+                        {
+                            Id = (byte)66,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "São Luís e Região",
+                            Number = 98
+                        },
+                        new
+                        {
+                            Id = (byte)67,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            Name = "Imperatriz e Região",
+                            Number = 99
+                        });
+                });
+
+            modelBuilder.Entity("uBee.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("LocationId")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UserRole")
-                        .HasColumnType("int");
+                    b.Property<byte>("UserRole")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("_passwordHash")
                         .IsRequired()
@@ -190,79 +747,75 @@ namespace uBee.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
-                        .IsUnique();
+                    b.HasIndex("LocationId");
 
                     b.ToTable("users", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d9612923-19ce-4af6-a166-94d919e42fa3"),
-                            Email = "admin@ubee.com",
-                            Location = 11,
+                            Id = 10000,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)1,
                             Name = "Administrador",
-                            Phone = "999999999",
                             Surname = "(built-in)",
-                            UserRole = 1,
+                            UserRole = (byte)1,
                             _passwordHash = "BGcEw9QQNyBOf+rLF/xrMboZKa035bzLBqgGpTBJTrE8Fk2TwAMbe8N49SbaM2Ro"
                         },
                         new
                         {
-                            Id = new Guid("c5901c93-817a-43d4-a5ab-be2d3aee1ee3"),
-                            Email = "cleber@ubee.com",
-                            Location = 15,
+                            Id = 10001,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)1,
                             Name = "Cleber",
-                            Phone = "999999991",
                             Surname = "(built-in)",
-                            UserRole = 3,
+                            UserRole = (byte)2,
                             _passwordHash = "AxX8E7IFxv4rSTXU40IRjY6oPLVOq1y1tp0O5/vabDT/SPZlOWdktbiKCz2YLdzJ"
                         },
                         new
                         {
-                            Id = new Guid("b31ea7f4-b852-45d1-ae38-684310c6fb17"),
-                            Email = "diego@ubee.com",
-                            Location = 15,
+                            Id = 10002,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)29,
                             Name = "Diego",
-                            Phone = "999999992",
                             Surname = "(built-in)",
-                            UserRole = 2,
+                            UserRole = (byte)3,
                             _passwordHash = "SlZEzmsPcuYfe8GRqN9lMLqv5KJpVmGpChaRoS5YVYQo/sSdeY6G5xj+nLF7zxJR"
                         },
                         new
                         {
-                            Id = new Guid("18e74db3-4205-423b-9ffd-a9bf38aff665"),
-                            Email = "lucas@ubee.com",
-                            Location = 11,
+                            Id = 10003,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)1,
                             Name = "Lucas",
-                            Phone = "999999993",
                             Surname = "(built-in)",
-                            UserRole = 2,
+                            UserRole = (byte)3,
                             _passwordHash = "Wa+ZKmUcoWjcVPjQwVzY3tok2Thcejh2fGlA2lwZXv2oZ0NxL6Kb71NPYB8LP2De"
                         },
                         new
                         {
-                            Id = new Guid("6e409a41-6cbb-4f8d-92f3-c05b6bb6e181"),
-                            Email = "rafael@ubee.com",
-                            Location = 11,
+                            Id = 10004,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)5,
                             Name = "Rafael",
-                            Phone = "999999994",
                             Surname = "(built-in)",
-                            UserRole = 3,
+                            UserRole = (byte)2,
                             _passwordHash = "tiNsfaj8kjCoJJcJeNyQqn03Ym4vuQldu3T+QL0AtJ9OzfkZcwo8UCd5+UcTDzEa"
                         },
                         new
                         {
-                            Id = new Guid("5b108440-fa72-4373-9f32-c962addb105e"),
-                            Email = "wesley@ubee.com",
-                            Location = 21,
+                            Id = 10005,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsDeleted = false,
+                            LocationId = (byte)4,
                             Name = "Wesley",
-                            Phone = "999999995",
                             Surname = "(built-in)",
-                            UserRole = 2,
+                            UserRole = (byte)3,
                             _passwordHash = "V8xyPoBEnUEUKLq5dxW5hqk8yiD42kfs1BMd8fKRkgrL9Ad1cA95US4avnA4TPYz"
                         });
                 });
@@ -316,6 +869,179 @@ namespace uBee.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("uBee.Domain.Entities.User", b =>
+                {
+                    b.HasOne("uBee.Domain.Entities.Location", "Location")
+                        .WithMany("Users")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.OwnsOne("Phone", "Phone", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(12)
+                                .HasColumnType("nvarchar(12)")
+                                .HasColumnName("Phone");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = 10000,
+                                    Value = "11-983594962"
+                                },
+                                new
+                                {
+                                    UserId = 10001,
+                                    Value = "11-992504176"
+                                },
+                                new
+                                {
+                                    UserId = 10002,
+                                    Value = "48-91662888"
+                                },
+                                new
+                                {
+                                    UserId = 10003,
+                                    Value = "11-994635700"
+                                },
+                                new
+                                {
+                                    UserId = 10004,
+                                    Value = "15-998106370"
+                                },
+                                new
+                                {
+                                    UserId = 10005,
+                                    Value = "14-981343266"
+                                });
+                        });
+
+                    b.OwnsOne("uBee.Domain.ValueObjects.CPF", "CPF", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(11)
+                                .HasColumnType("nvarchar(11)")
+                                .HasColumnName("CPF");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = 10000,
+                                    Value = "80455390037"
+                                },
+                                new
+                                {
+                                    UserId = 10001,
+                                    Value = "87622041068"
+                                },
+                                new
+                                {
+                                    UserId = 10002,
+                                    Value = "40070242003"
+                                },
+                                new
+                                {
+                                    UserId = 10003,
+                                    Value = "99872134057"
+                                },
+                                new
+                                {
+                                    UserId = 10004,
+                                    Value = "46074925070"
+                                },
+                                new
+                                {
+                                    UserId = 10005,
+                                    Value = "10096759070"
+                                });
+                        });
+
+                    b.OwnsOne("uBee.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(256)
+                                .HasColumnType("nvarchar(256)")
+                                .HasColumnName("Email");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.HasData(
+                                new
+                                {
+                                    UserId = 10000,
+                                    Value = "admin@ubee.com"
+                                },
+                                new
+                                {
+                                    UserId = 10001,
+                                    Value = "cleber@ubee.com"
+                                },
+                                new
+                                {
+                                    UserId = 10002,
+                                    Value = "diego@ubee.com"
+                                },
+                                new
+                                {
+                                    UserId = 10003,
+                                    Value = "lucas@ubee.com"
+                                },
+                                new
+                                {
+                                    UserId = 10004,
+                                    Value = "rafael@ubee.com"
+                                },
+                                new
+                                {
+                                    UserId = 10005,
+                                    Value = "wesley@ubee.com"
+                                });
+                        });
+
+                    b.Navigation("CPF")
+                        .IsRequired();
+
+                    b.Navigation("Email")
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Phone")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("uBee.Domain.Entities.BeeContract", b =>
                 {
                     b.Navigation("ContractedHives");
@@ -324,6 +1050,11 @@ namespace uBee.Persistence.Migrations
             modelBuilder.Entity("uBee.Domain.Entities.Hive", b =>
                 {
                     b.Navigation("ContractedHives");
+                });
+
+            modelBuilder.Entity("uBee.Domain.Entities.Location", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("uBee.Domain.Entities.User", b =>

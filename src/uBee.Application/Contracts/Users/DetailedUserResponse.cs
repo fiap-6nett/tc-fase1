@@ -1,52 +1,48 @@
-using uBee.Domain.Enumerations;
-
 namespace uBee.Application.Contracts.Users
 {
-    public sealed class DetailedUserResponse
+    /// <summary>
+    /// Represents a detailed user response in the system.
+    /// </summary>
+    public class DetailedUserResponse
     {
         /// <summary>
-        /// Gets or sets the user identifier.
+        /// Gets or sets the unique identifier of the user.
         /// </summary>
-        public Guid IdUser { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the user name.
+        /// Gets or sets the full name of the user.
         /// </summary>
-        public string Name { get; set; }
+        public string FullName { get; set; }
 
         /// <summary>
-        /// Gets or sets the user surname.
+        /// Gets or sets the CPF of the user.
         /// </summary>
-        public string Surname { get; set; }
+        public string Cpf { get; set; }
 
         /// <summary>
-        /// Gets or sets the user email.
+        /// Gets or sets the email of the user.
         /// </summary>
         public string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets the user phone.
+        /// Gets or sets the phone number of the user.
         /// </summary>
         public string Phone { get; set; }
 
         /// <summary>
-        /// Gets or sets the user location.
+        /// Gets or sets the DDD (area code) of the user.
         /// </summary>
-        public EnLocation Location { get; set; }
+        public int DDD { get; set; }
 
         /// <summary>
-        /// Gets or sets the user role.
+        /// Gets or sets the description of the user's location (e.g., São Paulo).
         /// </summary>
-        public EnUserRole UserRole { get; set; }
+        public string Location { get; set; }
 
         /// <summary>
-        /// Gets the user's creation date.
+        /// Gets or sets the role of the user as a friendly string (e.g., Beekeeper).
         /// </summary>
-        public DateTime CreatedAt { get; set; }
-
-        /// <summary>
-        /// Gets the user's last updated date.
-        /// </summary>
-        public DateTime? LastUpdatedAt { get; set; }
+        public string UserRole { get; set; }
     }
 }

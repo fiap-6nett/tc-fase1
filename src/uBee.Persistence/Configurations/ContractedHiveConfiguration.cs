@@ -10,27 +10,23 @@ namespace uBee.Persistence.Configurations
         {
             builder.ToTable("contractedhives");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(c => c.Id);
 
-            builder.Property(x => x.CreatedAt)
-                   .IsRequired();
-
-            builder.Property(x => x.LastUpdatedAt);
-
-            builder.HasOne(x => x.BeeContract)
+            builder.HasOne(c => c.BeeContract)
                    .WithMany()
-                   .HasForeignKey(x => x.IdBeeContract)
+                   .HasForeignKey(c => c.IdBeeContract)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(x => x.Hive)
+            builder.HasOne(c => c.Hive)
                    .WithMany()
-                   .HasForeignKey(x => x.IdHive)
+                   .HasForeignKey(c => c.IdHive)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(x => x.IsDeleted)
-                   .HasDefaultValue(false);
+            builder.Property(p => p.IsDeleted);
+            builder.Property(p => p.CreatedAt).IsRequired();
+            builder.Property(p => p.LastUpdatedAt);
 
-            builder.HasQueryFilter(x => !x.IsDeleted);
+            builder.HasQueryFilter(p => !p.IsDeleted);
         }
     }
 }

@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using uBee.Api.Constants;
@@ -11,6 +12,13 @@ namespace uBee.Api.Infrastructure
     [Produces("application/json")]
     public class ApiController : ControllerBase
     {
+        protected IMediator Mediator { get; }
+
+        public ApiController(IMediator mediator)
+        {
+            Mediator = mediator;
+        }
+
         #region Methods
 
         protected new IActionResult Ok(object value)

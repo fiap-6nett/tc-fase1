@@ -1,9 +1,8 @@
+using System.Data.SqlClient;
 using System.Reflection;
-using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Data.SqlClient;
 using uBee.Application.Core.Abstractions.Data;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
@@ -27,41 +26,42 @@ namespace uBee.Persistence
         public DbSet<Hive> Hives { get; set; }
         public DbSet<BeeContract> BeeContracts { get; set; }
         public DbSet<ContractedHive> ContractedHives { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         #endregion
 
         #region IDbContext Members
 
         public DbSet<TEntity> Set<TEntity, TKey>()
-            where TEntity : EntityBase
+            where TEntity : Entity<TKey>
             where TKey : IEquatable<TKey>
         {
             return base.Set<TEntity>();
         }
 
         public async Task<TEntity> GetBydIdAsync<TEntity, TKey>(TKey idEntity)
-            where TEntity : EntityBase
+            where TEntity : Entity<TKey>
             where TKey : IEquatable<TKey>
         {
             return await Set<TEntity>().FirstOrDefaultAsync(e => e.Id.Equals(idEntity));
         }
 
         public void Insert<TEntity, TKey>(TEntity entity)
-            where TEntity : EntityBase
+            where TEntity : Entity<TKey>
             where TKey : IEquatable<TKey>
         {
             Set<TEntity>().Add(entity);
         }
 
         public void InsertRange<TEntity, TKey>(IReadOnlyCollection<TEntity> entities)
-            where TEntity : EntityBase
+            where TEntity : Entity<TKey>
             where TKey : IEquatable<TKey>
         {
             Set<TEntity>().AddRange(entities);
         }
 
         public void Remove<TEntity, TKey>(TEntity entity)
-            where TEntity : EntityBase
+            where TEntity : Entity<TKey>
             where TKey : IEquatable<TKey>
         {
             Set<TEntity>().Remove(entity);
@@ -95,9 +95,7 @@ namespace uBee.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<Notification>();
-
-            // Apply configurations from the assembly
+            // Apply all configurations from the assembly
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(modelBuilder);
@@ -108,7 +106,7 @@ namespace uBee.Persistence
         #region Private Methods
 
         /// <summary>
-        /// Atualiza os campos de auditoria (CreatedAt e LastUpdatedAt) para entidades que implementam IAuditableEntity.
+        /// Updates audit fields (CreatedAt and LastUpdatedAt) for entities that implement IAuditableEntity.
         /// </summary>
         private void UpdateAuditableEntities(DateTime currentDate)
         {
@@ -123,7 +121,7 @@ namespace uBee.Persistence
         }
 
         /// <summary>
-        /// Gerencia a exclusão suave (soft delete) para entidades que implementam ISoftDeletableEntity.
+        /// Manages soft deletion for entities that implement ISoftDeletableEntity.
         /// </summary>
         private void HandleSoftDeletes()
         {
@@ -140,7 +138,7 @@ namespace uBee.Persistence
         }
 
         /// <summary>
-        /// Garante que entidades relacionadas a uma entidade excluída não sejam excluídas também.
+        /// Ensures that related entities to a deleted entity are not also deleted.
         /// </summary>
         private static void UpdateDeletedEntityReferences(EntityEntry entityEntry)
         {

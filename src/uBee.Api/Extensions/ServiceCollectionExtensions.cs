@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -16,17 +17,16 @@ namespace uBee.Api.Extensions
                 setup.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "uBee - API",
-                    Version = "v1"
+                    Version = "v1",
                 });
 
-                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Description = "JWT Authorization header using the Bearer scheme.",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    BearerFormat = "JWT",
-                    Scheme = "Bearer",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
                 });
 
                 setup.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -47,6 +47,10 @@ namespace uBee.Api.Extensions
                 });
 
                 setup.OperationFilter<SecurityRequirementsOperationFilter>(true, "Bearer");
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                setup.IncludeXmlComments(xmlPath);
             });
 
             return services;

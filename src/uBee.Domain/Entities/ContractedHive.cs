@@ -1,78 +1,60 @@
-using uBee.Domain.Core.Primitives;
-using Flunt.Notifications;
-using Flunt.Validations;
-using System;
 using uBee.Domain.Core.Abstractions;
+using uBee.Domain.Core.Primitives;
+using uBee.Domain.Core.Utility;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
+using static uBee.Domain.Errors.DomainError;
 
 namespace uBee.Domain.Entities
 {
-    public class ContractedHive : EntityBase, IAuditableEntity, ISoftDeletableEntity
+    public class ContractedHive : Entity<int>, IAuditableEntity, ISoftDeletableEntity
     {
         #region Properties
-
-        // Foreign Keys
-        public Guid IdBeeContract { get; private set; }
-        public BeeContract BeeContract { get; private set; }
-
-        public Guid IdHive { get; private set; }
-        public Hive Hive { get; private set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? LastUpdatedAt { get; private set; }
 
+        // Foreign Keys
+        public int IdBeeContract { get; private set; }
+        public BeeContract BeeContract { get; private set; }
+
+        public int IdHive { get; private set; }
+        public Hive Hive { get; private set; }
+
         #endregion
 
         #region Constructors
-        private ContractedHive() { }
 
-        public ContractedHive(Guid contractId, Guid hiveId)
+        private ContractedHive()
+        { }
+
+        public ContractedHive(int contractId, int hiveId)
         {
-            AddNotifications(
-                new Contract<Notification>()
-                    .Requires()
-                    .IsFalse(contractId == Guid.Empty, nameof(contractId), "The contract id is required.")
-                    .IsFalse(hiveId == Guid.Empty, nameof(hiveId), "The hive id is required.")
-            );
+            Ensure.GreaterThan(contractId, 0, DomainError.BeeContract.NotFound.Message, nameof(contractId));
+            Ensure.GreaterThan(hiveId, 0, DomainError.Hive.NotFound.Message, nameof(hiveId));
 
-            if (IsValid)
-            {
-                IdBeeContract = contractId;
-                IdHive = hiveId;
-                CreatedAt = DateTime.Now;
-                LastUpdatedAt = null;
-                IsDeleted = false;
-            }
+            IdBeeContract = contractId;
+            IdHive = hiveId;
         }
+
         #endregion
 
         #region Methods
-        public void UpdateHive(Guid newHiveId)
+
+        public void UpdateHive(int newHiveId)
         {
-            if (newHiveId == Guid.Empty)
-                throw new DomainException(DomainError.ContractedHive.InvalidHive);
+            Ensure.GreaterThan(newHiveId, 0, DomainError.Hive.InvalidHive.Message, nameof(newHiveId));
 
             IdHive = newHiveId;
             LastUpdatedAt = DateTime.Now;
         }
 
-        public void UpdateContract(Guid newBeeContractId)
+        public void UpdateContract(int newBeeContractId)
         {
-            if (newBeeContractId == Guid.Empty)
-                throw new DomainException(DomainError.ContractedHive.InvalidContract);
+            Ensure.GreaterThan(newBeeContractId, 0, DomainError.BeeContract.NotFound.Message, nameof(newBeeContractId));
 
             IdBeeContract = newBeeContractId;
-            LastUpdatedAt = DateTime.Now;
-        }
-
-        public void MarkAsDeleted()
-        {
-            if (IsDeleted)
-                throw new DomainException(DomainError.General.AlreadyDeleted);
-
-            IsDeleted = true;
             LastUpdatedAt = DateTime.Now;
         }
 

@@ -1,21 +1,22 @@
-using Flunt.Notifications;
-using Flunt.Validations;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
+using uBee.Domain.Core.Utility;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
 
 namespace uBee.Domain.Entities
 {
-    public class BeeContract : EntityBase, IAuditableEntity, ISoftDeletableEntity
+    public sealed class BeeContract : Entity<int>, IAuditableEntity, ISoftDeletableEntity
     {
         #region Private Fields
+
         private List<ContractedHive> _contractedHives;
 
         #endregion
 
         #region Properties
+
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public decimal Price { get; private set; }
@@ -26,43 +27,33 @@ namespace uBee.Domain.Entities
         public DateTime? LastUpdatedAt { get; private set; }
 
         // Foreign Keys
-        public Guid IdUser { get; private set; }
+        public int IdUser { get; private set; }
         public User User { get; private set; }
 
-        // Relationship
+        // Compositions
         public IReadOnlyCollection<ContractedHive> ContractedHives => _contractedHives.AsReadOnly();
 
         #endregion
 
         #region Constructors
+
         private BeeContract()
+        { }
+
+        public BeeContract(DateTime startDate, DateTime endDate, decimal price, EnBeeContractStatus status, int idUser)
         {
+            Ensure.LessThan(startDate, endDate, DomainError.BeeContract.InvalidStatusChange.Message, nameof(endDate));
+            Ensure.GreaterThan(price, 0, DomainError.BeeContract.InvalidPrice.Message, nameof(price));
+            Ensure.GreaterThan(idUser, 0, DomainError.User.NotFound.Message, nameof(idUser));
+
+            StartDate = startDate;
+            EndDate = endDate;
+            Price = price;
+            Status = status;
+            IdUser = idUser;
             _contractedHives = new List<ContractedHive>();
         }
 
-        public BeeContract(DateTime startDate, DateTime endDate, decimal price, EnBeeContractStatus status, Guid idUser)
-        {
-            AddNotifications(
-                new Contract<Notification>()
-                    .Requires()
-                    .IsLowerThan(startDate, endDate, nameof(endDate), "The end date must be later than the start date.")
-                    .IsGreaterThan(price, 0, nameof(price), "The price must be greater than zero.")
-                    .IsFalse(idUser == Guid.Empty, nameof(idUser), "The user id is required.")
-            );
-
-            if (IsValid)
-            {
-                StartDate = startDate;
-                EndDate = endDate;
-                Price = price;
-                Status = status;
-                IdUser = idUser;
-                CreatedAt = DateTime.Now;
-                LastUpdatedAt = null;
-                IsDeleted = false;
-                _contractedHives = new List<ContractedHive>();
-            }
-        }
         #endregion
 
         #region Methods
@@ -78,8 +69,7 @@ namespace uBee.Domain.Entities
 
         public void UpdatePrice(decimal newPrice)
         {
-            if (newPrice <= 0)
-                throw new DomainException(DomainError.BeeContract.InvalidPrice);
+            Ensure.GreaterThan(newPrice, 0, DomainError.BeeContract.InvalidPrice.Message, nameof(newPrice));
 
             Price = newPrice;
             LastUpdatedAt = DateTime.Now;
@@ -87,19 +77,8 @@ namespace uBee.Domain.Entities
 
         public void AddContractedHive(ContractedHive contractedHive)
         {
-            if (contractedHive == null)
-                throw new DomainException(DomainError.ContractedHive.InvalidHive);
-
+            Ensure.NotNull(contractedHive, DomainError.ContractedHive.InvalidHive.Message, nameof(contractedHive));
             _contractedHives.Add(contractedHive);
-        }
-
-        public void MarkAsDeleted()
-        {
-            if (IsDeleted)
-                throw new DomainException(DomainError.General.AlreadyDeleted);
-
-            IsDeleted = true;
-            LastUpdatedAt = DateTime.Now;
         }
 
         #endregion

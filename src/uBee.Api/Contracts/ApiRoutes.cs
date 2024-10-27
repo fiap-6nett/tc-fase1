@@ -12,10 +12,8 @@ namespace uBee.Api.Contracts
         {
             public const string Get = "users";
             public const string GetMyProfile = "users/me";
-            public const string Update = "users/me";
+            public const string DeleteMyProfile = "users/me/delete";
             public const string ChangePassword = "users/me/change-password";
         }
-
-
     }
 }
