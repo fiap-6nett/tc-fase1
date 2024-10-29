@@ -81,8 +81,8 @@ namespace uBee.Persistence
         {
             var currentDate = DateTime.UtcNow;
 
-            UpdateAuditableEntities(currentDate);
             HandleSoftDeletes();
+            UpdateAuditableEntities(currentDate);
 
             return await base.SaveChangesAsync(cancellationToken);
         }
@@ -145,7 +145,7 @@ namespace uBee.Persistence
         /// </summary>
         private static void UpdateDeletedEntityReferences(EntityEntry entityEntry)
         {
-            foreach (var referenceEntry in entityEntry.References.Where(r => r.TargetEntry.State == EntityState.Deleted))
+            foreach (var referenceEntry in entityEntry.References.Where(r => r.TargetEntry != null && r.TargetEntry.State == EntityState.Deleted))
             {
                 referenceEntry.TargetEntry.State = EntityState.Unchanged;
                 UpdateDeletedEntityReferences(referenceEntry.TargetEntry);

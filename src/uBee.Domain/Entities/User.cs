@@ -87,26 +87,6 @@ namespace uBee.Domain.Entities
                 throw new DomainException(DomainError.User.CannotChangePassword);
 
             _passwordHash = newPasswordHash;
-            LastUpdatedAt = DateTime.Now;
-        }
-
-        public void ChangeName(string newName, string newSurname)
-        {
-            Ensure.NotEmpty(newName, DomainError.User.NameIsRequired.Message, nameof(newName));
-            Ensure.NotEmpty(newSurname, DomainError.User.SurnameIsRequired.Message, nameof(newSurname));
-
-            Name = newName;
-            Surname = newSurname;
-            LastUpdatedAt = DateTime.Now;
-        }
-
-        public void SoftDelete()
-        {
-            if (IsDeleted)
-                throw new DomainException(DomainError.User.AlreadyDeleted);
-
-            IsDeleted = true;
-            LastUpdatedAt = DateTime.Now;
         }
 
         #endregion

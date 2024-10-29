@@ -55,6 +55,11 @@ namespace uBee.Domain.Repositories
         /// <param name="user">The user entity to insert.</param>
         Task InsertAsync(User user);
 
+        /// <summary>
+        /// Soft deletes a user by marking them as deleted without removing from the database.
+        /// </summary>
+        /// <param name="user">The user entity to mark as deleted.</param>
+        Task RemoveAsync(User user);
         #endregion
     }
 }

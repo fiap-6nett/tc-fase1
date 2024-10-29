@@ -35,7 +35,7 @@ namespace uBee.Application.Users
             if (user.IsDeleted)
                 throw new DomainException(DomainError.User.AlreadyDeleted);
 
-            user.SoftDelete();
+            await _userRepository.RemoveAsync(user);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
