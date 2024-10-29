@@ -16,6 +16,10 @@ public sealed class Phone : ValueObject
 
     public string Value { get; private set; }
 
+    public int DDD => int.Parse(Value.Split('-')[0]);
+
+    public string PhoneNumberWithoutDdd => Value.Split('-')[1];
+
     #endregion
 
     #region Constructors
@@ -44,24 +48,6 @@ public sealed class Phone : ValueObject
             throw new ArgumentException(DomainError.Phone.InvalidFormat.Message, nameof(phone));
 
         return new Phone(phone);
-    }
-
-    public string GetDdd()
-    {
-        var parts = Value.Split('-');
-        if (parts.Length != 2)
-            throw new ArgumentException(DomainError.Phone.InvalidFormat.Message);
-
-        return parts[0];
-    }
-
-    public string GetPhoneNumberWithoutDdd()
-    {
-        var parts = Value.Split('-');
-        if (parts.Length != 2)
-            throw new ArgumentException(DomainError.Phone.InvalidFormat.Message);
-
-        return parts[1];
     }
 
     #endregion

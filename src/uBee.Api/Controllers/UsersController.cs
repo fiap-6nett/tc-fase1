@@ -74,32 +74,34 @@ namespace uBee.Api.Controllers
         /// Changes the password for the currently logged-in user.
         /// </summary>
         /// <param name="changePasswordRequest">The request containing the current and new passwords.</param>
-        /// <returns>Returns Ok if the password was successfully changed.</returns>
-        /// <response code="200">Password was changed successfully.</response>
+        /// <returns>Returns No Content (204) if the password was successfully changed.</returns>
+        /// <response code="204">Password was changed successfully.</response>
         /// <response code="400">Bad request error if the operation fails.</response>
         [HttpPut(ApiRoutes.Users.ChangePassword)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
         {
             await Mediator.Send(new UpdateUserPasswordCommand(_userSessionProvider.IdUser, changePasswordRequest.CurrentPassword, changePasswordRequest.NewPassword));
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
         /// Soft deletes the currently logged-in user.
         /// </summary>
-        /// <response code="200">User was deleted successfully.</response>
+        /// <returns>Returns No Content (204) if the user was deleted successfully.</returns>
+        /// <response code="204">User was deleted successfully.</response>
         /// <response code="400">Returns a bad request error if the deletion fails.</response>
         [Authorize] // Ensures only logged-in users can delete their account
         [HttpDelete(ApiRoutes.Users.DeleteMyProfile)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteMyProfile()
         {
             await Mediator.Send(new DeleteUserCommand(_userSessionProvider.IdUser));
-            return Ok();
+            return NoContent();
         }
+
 
         #endregion
     }

@@ -55,8 +55,7 @@ namespace uBee.Application.Authentication
             if (!await _userRepository.IsPhoneUniqueAsync(phoneResult.Value))
                 throw new DomainException(DomainError.User.DuplicatePhone);
 
-            var ddd = int.Parse(phoneResult.GetDdd());
-            var location = await _locationRepository.GetByDddAsync(ddd);
+            var location = await _locationRepository.GetByDddAsync(phoneResult.DDD);
             if (location is null)
                 throw new DomainException(DomainError.Location.InvalidAreaCode);
 
