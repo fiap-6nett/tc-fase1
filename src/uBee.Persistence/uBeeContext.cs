@@ -7,6 +7,7 @@ using uBee.Application.Core.Abstractions.Data;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Core.Primitives;
 using uBee.Domain.Entities;
+using uBee.Persistence.Extensions;
 
 namespace uBee.Persistence
 {
@@ -95,8 +96,10 @@ namespace uBee.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Apply all configurations from the assembly
+            modelBuilder.SetDefaultColumnTypes();
+            modelBuilder.RemoveCascadeConvention();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplySeedConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(modelBuilder);
         }
