@@ -12,7 +12,7 @@ using uBee.Persistence;
 namespace uBee.Persistence.Migrations
 {
     [DbContext(typeof(uBeeContext))]
-    [Migration("20241025044135_InitialCreate")]
+    [Migration("20241029222724_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
