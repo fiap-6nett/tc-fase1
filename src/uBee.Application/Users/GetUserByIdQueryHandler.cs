@@ -8,7 +8,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, DetailedUserResponse>
+    public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, DetailedUserResponse>
     {
         #region Read-Only Fields
 

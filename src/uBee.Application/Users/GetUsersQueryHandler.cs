@@ -12,7 +12,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedList<UserResponse>>
+    public sealed class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedList<UserResponse>>
     {
         #region Read-Only Fields
 

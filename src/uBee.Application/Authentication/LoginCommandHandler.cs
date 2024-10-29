@@ -8,7 +8,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Authentication
 {
-    public class LoginCommandHandler : ICommandHandler<LoginCommand, TokenResponse>
+    public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, TokenResponse>
     {
         #region Read-Only Fields
 

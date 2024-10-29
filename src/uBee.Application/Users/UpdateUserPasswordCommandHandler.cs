@@ -10,7 +10,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public class UpdateUserPasswordCommandHandler : ICommandHandler<UpdateUserPasswordCommand, Unit>
+    public sealed class UpdateUserPasswordCommandHandler : ICommandHandler<UpdateUserPasswordCommand, Unit>
     {
         #region Read-Only Fields
 

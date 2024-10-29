@@ -11,7 +11,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Authentication
 {
-    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, TokenResponse>
+    public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, TokenResponse>
     {
         #region Read-Only Fields
 

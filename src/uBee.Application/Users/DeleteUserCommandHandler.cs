@@ -7,7 +7,7 @@ using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {
-    public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, Unit>
+    public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand, Unit>
     {
         #region Read-Only Fields
 
