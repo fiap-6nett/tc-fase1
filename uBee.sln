@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "uBee.Api", "src\uBee.Api\uB
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A7535C40-0569-4706-8123-4E39E5DA1F11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uBee.ArchitectureTests", "tests\uBee.ArchitectureTests\uBee.ArchitectureTests.csproj", "{DFBD4799-9733-4CDE-88C4-ADEDE9809317}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{A7535C40-0569-4706-8123-4E39E5DA1F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7535C40-0569-4706-8123-4E39E5DA1F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7535C40-0569-4706-8123-4E39E5DA1F11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFBD4799-9733-4CDE-88C4-ADEDE9809317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFBD4799-9733-4CDE-88C4-ADEDE9809317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFBD4799-9733-4CDE-88C4-ADEDE9809317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFBD4799-9733-4CDE-88C4-ADEDE9809317}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{3B5F0480-9C9E-48DE-A62C-B5A5610AF5B3} = {9B9C45D0-16C4-40EC-8CDF-87EDDF074EF4}
 		{291D0228-73C8-4C1B-BAAC-4E06C928680F} = {9B9C45D0-16C4-40EC-8CDF-87EDDF074EF4}
 		{AD651BA5-9BA1-48E5-934D-A0AF08F4177E} = {9B7C4ECF-7201-45D1-8948-F922A9FDAA5C}
+		{DFBD4799-9733-4CDE-88C4-ADEDE9809317} = {8E700D2F-BEA0-453D-BD93-9FBC526A07A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B91581D-F7EA-45F3-AC34-70CD937E949E}

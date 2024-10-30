@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\uBee.Application\uBee.Application.csproj" />
     <ProjectReference Include="..\uBee.Infrastructure\uBee.Infrastructure.csproj" />
   </ItemGroup>
 
