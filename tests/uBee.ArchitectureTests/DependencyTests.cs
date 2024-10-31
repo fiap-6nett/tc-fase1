@@ -7,7 +7,6 @@ namespace uBee.ArchitectureTests
     {
         #region Constants
 
-        private const string SharedNamespace = nameof(Shared);
         private const string DomainNamespace = nameof(Domain);
         private const string ApplicationNamespace = nameof(Application);
         private const string InfrastructureNamespace = nameof(Infrastructure);
@@ -21,31 +20,6 @@ namespace uBee.ArchitectureTests
         #endregion
 
         #region Test Scenarios
-
-        [Fact]
-        public void Shared_Should_Not_HaveDependencyOnOtherProjects()
-        {
-            // Arrange
-            var assembly = typeof(Shared.AssemblyReference).Assembly;
-
-            var otherProjects = new[]
-            {
-                DomainNamespace,
-                ApplicationNamespace,
-                InfrastructureNamespace,
-                PersistenceNamespace,
-                ApiNamespace
-            };
-
-            // Act
-            var testResult = Types.InAssembly(assembly)
-                .ShouldNot()
-                .HaveDependencyOnAny(otherProjects)
-                .GetResult();
-
-            // Assert
-            testResult.IsSuccessful.Should().BeTrue();
-        }
 
         [Fact]
         public void Domain_Should_Not_HaveDependencyOnOtherProjects()

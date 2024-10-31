@@ -1,6 +1,6 @@
-namespace uBee.Shared.Extensions
+namespace uBee.Domain.Core.Utility.Extensions
 {
-    public static class CollectionExtensions
+    public static class CollectionExtension
     {
         #region Extension Methods
 

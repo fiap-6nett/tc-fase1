@@ -1,10 +1,10 @@
 using uBee.Application.Contracts.Users;
+using uBee.Application.Core.Helpers;
+using uBee.Application.Core.Messagings;
 using uBee.Application.Repositories;
 using uBee.Domain.Enumerations;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
-using uBee.Shared.Helpers;
-using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {

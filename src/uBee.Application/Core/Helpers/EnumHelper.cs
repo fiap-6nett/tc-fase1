@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace uBee.Shared.Helpers
+namespace uBee.Application.Core.Helpers
 {
     public static class EnumHelper<T> where T : Enum
     {

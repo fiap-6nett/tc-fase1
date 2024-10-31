@@ -24,7 +24,6 @@
     <ProjectReference Include="..\..\src\uBee.Domain\uBee.Domain.csproj" />
     <ProjectReference Include="..\..\src\uBee.Infrastructure\uBee.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\uBee.Persistence\uBee.Persistence.csproj" />
-    <ProjectReference Include="..\..\src\uBee.Shared\uBee.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

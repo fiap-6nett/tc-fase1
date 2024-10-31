@@ -1,4 +1,4 @@
-using uBee.Shared.Extensions;
+using uBee.Domain.Core.Utility.Extensions;
 
 namespace uBee.Domain.Core.Utility
 {

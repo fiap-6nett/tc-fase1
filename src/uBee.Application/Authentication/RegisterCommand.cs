@@ -1,7 +1,7 @@
 using uBee.Application.Contracts.Authentication;
+using uBee.Application.Core.Messagings;
 using uBee.Domain.Enumerations;
 using uBee.Domain.ValueObjects;
-using uBee.Shared.Messaging;
 
 namespace uBee.Application.Authentication
 {

@@ -1,12 +1,12 @@
 using MediatR;
 using uBee.Application.Core.Abstractions.Cryptography;
 using uBee.Application.Core.Abstractions.Data;
+using uBee.Application.Core.Messagings;
 using uBee.Application.Repositories;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
 using uBee.Domain.ValueObjects;
-using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {

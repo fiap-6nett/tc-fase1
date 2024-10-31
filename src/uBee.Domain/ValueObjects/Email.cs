@@ -1,7 +1,7 @@
+
 using System.Text.RegularExpressions;
 using uBee.Domain.Core.Primitives;
 using uBee.Domain.Errors;
-using uBee.Shared.Extensions;
 
 namespace uBee.Domain.ValueObjects
 {

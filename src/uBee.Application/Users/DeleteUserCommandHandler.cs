@@ -1,9 +1,9 @@
 using MediatR;
 using uBee.Application.Core.Abstractions.Data;
+using uBee.Application.Core.Messagings;
 using uBee.Application.Repositories;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
-using uBee.Shared.Messaging;
 
 namespace uBee.Application.Users
 {

@@ -1,5 +1,5 @@
 using uBee.Application.Contracts.Users;
-using uBee.Shared.Messaging;
+using uBee.Application.Core.Messagings;
 
 namespace uBee.Application.Users
 {
