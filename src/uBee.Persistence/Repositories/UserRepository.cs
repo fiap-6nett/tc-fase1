@@ -1,7 +1,7 @@
-using uBee.Domain.Entities;
-using uBee.Domain.Repositories;
-using uBee.Persistence.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
+using uBee.Application.Repositories;
+using uBee.Domain.Entities;
+using uBee.Persistence.Core.Primitives;
 
 namespace uBee.Persistence.Repositories
 {

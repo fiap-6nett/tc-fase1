@@ -1,9 +1,9 @@
 using uBee.Application.Contracts.Authentication;
 using uBee.Application.Core.Abstractions.Authentication;
+using uBee.Application.Repositories;
 using uBee.Domain.Core.Abstractions;
 using uBee.Domain.Errors;
 using uBee.Domain.Exceptions;
-using uBee.Domain.Repositories;
 using uBee.Shared.Messaging;
 
 namespace uBee.Application.Authentication

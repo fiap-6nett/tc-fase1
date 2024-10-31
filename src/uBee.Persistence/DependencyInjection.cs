@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using uBee.Application.Core.Abstractions.Data;
-using uBee.Domain.Repositories;
+using uBee.Application.Repositories;
 using uBee.Persistence.Infrastructure;
 using uBee.Persistence.Repositories;
 

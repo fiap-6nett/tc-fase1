@@ -1,6 +1,6 @@
 using uBee.Domain.Entities;
 
-namespace uBee.Domain.Repositories
+namespace uBee.Application.Repositories
 {
     public interface IUserRepository
     {

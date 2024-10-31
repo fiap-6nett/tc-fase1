@@ -10,7 +10,7 @@ namespace uBee.Api.Infrastructure
     [Authorize]
     [Consumes("application/json")]
     [Produces("application/json")]
-    public class ApiController : ControllerBase
+    public abstract class ApiController : ControllerBase
     {
         protected IMediator Mediator { get; }
 
