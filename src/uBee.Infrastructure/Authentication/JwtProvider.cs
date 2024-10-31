@@ -9,7 +9,7 @@ using uBee.Infrastructure.Authentication.Settings;
 
 namespace uBee.Infrastructure.Authentication
 {
-    internal sealed class JwtProvider : IJwtProvider
+    public sealed class JwtProvider : IJwtProvider
     {
         #region Read-Only Fields
 
