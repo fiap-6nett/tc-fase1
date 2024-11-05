@@ -62,55 +62,6 @@ namespace uBee.Domain.Errors
                 "Invalid DDD. The provided DDD does not correspond to any valid region in Brazil. Please ensure the DDD is correct, e.g., '11' for São Paulo.");
         }
 
-        public static class Hive
-        {
-            public static Error NotFound => new Error(
-                "Hive.NotFound",
-                "The hive with the specified identifier was not found.");
-
-            public static Error CannotMarkInUse => new Error(
-                "Hive.CannotMarkInUse",
-                "Only available hives can be marked as in use.");
-
-            public static Error CannotMarkAvailable => new Error(
-                "Hive.CannotMarkAvailable",
-                "Decommissioned hives cannot be made available again.");
-
-            public static Error CannotMarkUnderMaintenance => new Error(
-                "Hive.CannotMarkUnderMaintenance",
-                "In-use hives cannot be marked as under maintenance.");
-
-            public static Error CannotDecommission => new Error(
-                "Hive.CannotDecommission",
-                "In-use hives cannot be decommissioned.");
-
-            public static Error InvalidHive => new Error(
-                "Hive.InvalidHive",
-                "The specified hive is invalid.");
-        }
-
-        public static class BeeContract
-        {
-            public static Error NotFound => new Error(
-                "BeeContract.NotFound",
-                "The contract with the specified identifier was not found.");
-
-            public static Error InvalidStatusChange => new Error(
-                "BeeContract.InvalidStatusChange",
-                "Cannot change the status of a contract that is completed or cancelled.");
-
-            public static Error InvalidPrice => new Error(
-                "BeeContract.InvalidPrice",
-                "The price must be greater than zero.");
-        }
-
-        public static class ContractedHive
-        {
-            public static Error InvalidHive => new Error(
-                "ContractedHive.InvalidHive",
-                "The hive ID must not be empty.");
-        }
-
         #endregion
 
         #region Value Objects

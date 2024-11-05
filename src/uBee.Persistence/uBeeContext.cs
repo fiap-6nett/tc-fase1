@@ -24,9 +24,6 @@ namespace uBee.Persistence
         #region DbSets
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Hive> Hives { get; set; }
-        public DbSet<BeeContract> BeeContracts { get; set; }
-        public DbSet<ContractedHive> ContractedHives { get; set; }
         public DbSet<Location> Locations { get; set; }
 
         #endregion

@@ -13,8 +13,6 @@ namespace uBee.Domain.Entities
         #region Private Fields
 
         private string _passwordHash;
-        private List<Hive> _hives;
-        private List<BeeContract> _beeContracts;
 
         #endregion
 
@@ -34,10 +32,6 @@ namespace uBee.Domain.Entities
         // Foreign Keys
         public byte LocationId { get; private set; }
         public Location Location { get; private set; }
-
-        // Compositions
-        public IReadOnlyCollection<Hive> Hives => _hives.AsReadOnly();
-        public IReadOnlyCollection<BeeContract> BeeContracts => _beeContracts.AsReadOnly();
 
         #endregion
 
@@ -68,8 +62,6 @@ namespace uBee.Domain.Entities
             UserRole = userRole;
             LocationId = locationId;
             CreatedAt = DateTime.Now;
-            _hives = new List<Hive>();
-            _beeContracts = new List<BeeContract>();
         }
 
         #endregion

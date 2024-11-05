@@ -19,7 +19,7 @@ namespace uBee.Persistence.Migrations
                 {
                     Id = table.Column<byte>(type: "tinyint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "varchar(150)", maxLength: 100, nullable: false),
                     DDD = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -36,11 +36,11 @@ namespace uBee.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "varchar(150)", maxLength: 100, nullable: false),
+                    Surname = table.Column<string>(type: "varchar(150)", maxLength: 100, nullable: false),
                     CPF = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
+                    Phone = table.Column<string>(type: "varchar(150)", maxLength: 12, nullable: false),
                     UserRole = table.Column<byte>(type: "tinyint", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -55,97 +55,6 @@ namespace uBee.Persistence.Migrations
                         name: "FK_users_locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "beecontracts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_beecontracts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_beecontracts_users_IdUser",
-                        column: x => x.IdUser,
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "hives",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdUser = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_hives", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_hives_users_IdUser",
-                        column: x => x.IdUser,
-                        principalTable: "users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "contractedhives",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdBeeContract = table.Column<int>(type: "int", nullable: false),
-                    IdHive = table.Column<int>(type: "int", nullable: false),
-                    BeeContractId = table.Column<int>(type: "int", nullable: true),
-                    HiveId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_contractedhives", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_contractedhives_beecontracts_BeeContractId",
-                        column: x => x.BeeContractId,
-                        principalTable: "beecontracts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_contractedhives_beecontracts_IdBeeContract",
-                        column: x => x.IdBeeContract,
-                        principalTable: "beecontracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_contractedhives_hives_HiveId",
-                        column: x => x.HiveId,
-                        principalTable: "hives",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_contractedhives_hives_IdHive",
-                        column: x => x.IdHive,
-                        principalTable: "hives",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -238,36 +147,6 @@ namespace uBee.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_beecontracts_IdUser",
-                table: "beecontracts",
-                column: "IdUser");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_contractedhives_BeeContractId",
-                table: "contractedhives",
-                column: "BeeContractId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_contractedhives_HiveId",
-                table: "contractedhives",
-                column: "HiveId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_contractedhives_IdBeeContract",
-                table: "contractedhives",
-                column: "IdBeeContract");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_contractedhives_IdHive",
-                table: "contractedhives",
-                column: "IdHive");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_hives_IdUser",
-                table: "hives",
-                column: "IdUser");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_users_LocationId",
                 table: "users",
                 column: "LocationId");
@@ -276,15 +155,6 @@ namespace uBee.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "contractedhives");
-
-            migrationBuilder.DropTable(
-                name: "beecontracts");
-
-            migrationBuilder.DropTable(
-                name: "hives");
-
             migrationBuilder.DropTable(
                 name: "users");
 

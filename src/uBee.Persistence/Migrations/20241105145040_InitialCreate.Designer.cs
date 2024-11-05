@@ -12,7 +12,7 @@ using uBee.Persistence;
 namespace uBee.Persistence.Migrations
 {
     [DbContext(typeof(uBeeContext))]
-    [Migration("20241029222724_InitialCreate")]
+    [Migration("20241105145040_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,122 +24,6 @@ namespace uBee.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("uBee.Domain.Entities.BeeContract", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdUser")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastUpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("beecontracts", (string)null);
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.ContractedHive", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BeeContractId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("HiveId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdBeeContract")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdHive")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastUpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BeeContractId");
-
-                    b.HasIndex("HiveId");
-
-                    b.HasIndex("IdBeeContract");
-
-                    b.HasIndex("IdHive");
-
-                    b.ToTable("contractedhives", (string)null);
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.Hive", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("IdUser")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastUpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("hives", (string)null);
-                });
 
             modelBuilder.Entity("uBee.Domain.Entities.Location", b =>
                 {
@@ -161,7 +45,7 @@ namespace uBee.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int")
@@ -733,12 +617,12 @@ namespace uBee.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<byte>("UserRole")
                         .HasColumnType("tinyint");
@@ -823,55 +707,6 @@ namespace uBee.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("uBee.Domain.Entities.BeeContract", b =>
-                {
-                    b.HasOne("uBee.Domain.Entities.User", "User")
-                        .WithMany("BeeContracts")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.ContractedHive", b =>
-                {
-                    b.HasOne("uBee.Domain.Entities.BeeContract", null)
-                        .WithMany("ContractedHives")
-                        .HasForeignKey("BeeContractId");
-
-                    b.HasOne("uBee.Domain.Entities.Hive", null)
-                        .WithMany("ContractedHives")
-                        .HasForeignKey("HiveId");
-
-                    b.HasOne("uBee.Domain.Entities.BeeContract", "BeeContract")
-                        .WithMany()
-                        .HasForeignKey("IdBeeContract")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("uBee.Domain.Entities.Hive", "Hive")
-                        .WithMany()
-                        .HasForeignKey("IdHive")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("BeeContract");
-
-                    b.Navigation("Hive");
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.Hive", b =>
-                {
-                    b.HasOne("uBee.Domain.Entities.User", "User")
-                        .WithMany("Hives")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("uBee.Domain.Entities.User", b =>
                 {
                     b.HasOne("uBee.Domain.Entities.Location", "Location")
@@ -888,7 +723,7 @@ namespace uBee.Persistence.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(12)
-                                .HasColumnType("nvarchar(12)")
+                                .HasColumnType("varchar(150)")
                                 .HasColumnName("Phone");
 
                             b1.HasKey("UserId");
@@ -1045,26 +880,9 @@ namespace uBee.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("uBee.Domain.Entities.BeeContract", b =>
-                {
-                    b.Navigation("ContractedHives");
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.Hive", b =>
-                {
-                    b.Navigation("ContractedHives");
-                });
-
             modelBuilder.Entity("uBee.Domain.Entities.Location", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("uBee.Domain.Entities.User", b =>
-                {
-                    b.Navigation("BeeContracts");
-
-                    b.Navigation("Hives");
                 });
 #pragma warning restore 612, 618
         }
